@@ -1,0 +1,103 @@
+$BlackPawn: url('./ChessPieces/ChessBlackPawn.png');
+$BlackTower: url('./ChessPieces/ChessBlackTower.png');
+$BlackHorse: url('./ChessPieces/ChessBlackHorse.png');
+$BlackBishop: url('./ChessPieces/ChessBlackBishop.png');
+$BlackQueen: url('./ChessPieces/ChessBlackQueen.png');
+$BlackKing: url('./ChessPieces/ChessBlackKing.png');
+
+$WhitePawn: url('./ChessPieces/ChessWhitePawn.png');
+$WhiteTower: url('./ChessPieces/ChessWhiteTower.png');
+$WhiteHorse: url('./ChessPieces/ChessWhiteHorse.png');
+$WhiteBishop: url('./ChessPieces/ChessWhiteBishop.png');
+$WhiteQueen: url('./ChessPieces/ChessWhiteQueen.png');
+$WhiteKing: url('./ChessPieces/ChessWhiteKing.png');
+
+.singleHouse {
+    width: 61px;
+    height: 61px;
+    cursor: pointer;
+    margin: 0.01px 0 0.01px 0;
+}
+
+.whiteHouse {
+    background-color: white;
+    color: black;
+}
+
+.blackHouse {
+    background-color: #578bff;
+    color: white;
+}
+
+.TableComplete{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    border: 0.1px solid black;
+}
+
+.mergedHouses{
+    display: inline-grid;
+    align-items: center;
+}
+
+.void {
+    cursor: unset;
+}
+
+.possibleMove {
+    width: 58.77px;
+    height: 58.77px;
+    background-color: rgb(55, 228, 11);
+    border: solid rgba(38, 38, 102, 0.568);
+    border-width: 0.02em;
+    cursor: pointer;
+}
+
+.selectedHouse {
+    width: 58.77px;
+    height: 58.77px;
+    background-color: yellow;
+    border: solid black;
+    border-width: 0.02em;
+    cursor: pointer;
+}
+
+.BlackPawn {
+    content: $BlackPawn;
+}
+.BlackTower {
+    content: $BlackTower;
+}
+.BlackHorse {
+    content: $BlackHorse;
+}
+.BlackBishop {
+    content: $BlackBishop;
+}
+.BlackQueen {
+    content: $BlackQueen;
+}
+.BlackKing {
+    content: $BlackKing;
+}
+
+
+.WhitePawn {
+    content: $WhitePawn;
+}
+.WhiteTower {
+    content: $WhiteTower;
+}
+.WhiteHorse {
+    content: $WhiteHorse;
+}
+.WhiteBishop {
+    content: $WhiteBishop;
+}
+.WhiteQueen {
+    content: $WhiteQueen;
+}
+.WhiteKing {
+    content: $WhiteKing;
+}
