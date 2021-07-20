@@ -2,119 +2,72 @@ import React, { useState } from 'react';
 import './tableStyles.scss';
 import WsRequest from './Requests/requests';
 import SingleMove, {} from './MovePieces/Move'
+import Piece from '../Component/PieceComponent/PieceComponent';
+import PieceModel from '../Component/PieceModel/PieceModel';
 
 function Table() {
     const [selectedHouse, setSelectedHouse] = useState("");
     const [selectedHousePosition, setSelectedHousePosition] = useState("");
     const [whitePiecesAte, setWhitePiecesAte] = useState([]);
     const [blackPiecesAte, setBlackPiecesAte] = useState([]);
+    const [movedHouses, setMovedHouses] = useState([{}]);
     const colunmAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H"];
     const colunmLimit = [8, 7, 6, 5, 4, 3, 2, 1];
-    const whiteInitialPosition = {
-        pawn: ['A2', 'B2', 'C2', 'D2', 'E2', 'F2', 'G2', 'H2'],
-        tower: ['A1', 'H1'],
-        horse: ['B1', 'G1'],
-        bishop: ['C1', 'F1'],
-        king: ['E1'],
-        queen: ['D1']
-    };
-    const blackInitialPosition = {
-        pawn: ['A7', 'B7', 'C7', 'D7', 'E7', 'F7', 'G7', 'H7'],
-        tower: ['A8', 'H8'],
-        horse: ['B8', 'G8'],
-        bishop: ['C8', 'F8'],
-        king: ['E8'],
-        queen: ['D8']
-    };
-    const pieceNames = {
-        pawn: "pawn",
-        tower: "tower",
-        horse: "horse",
-        bishop: "bishop",
-        queen: "queen",
-        king: "king",
-        void: "void"
-    }
-
 
     /*
     * Return the class of the house based on:
     * index of Letter and index in colunm.
     * If the colunm is 'unpair', will return the opposite  
     */
-    const color = (alphabetIndex, index) => {
-        let whiteHouse = "whiteHouse";
-        let blackHouse = "blackHouse";
-        let position = colunmAlphabet[alphabetIndex] + (index);
-        let colorHouse = alphabetIndex % 2 === 0 ? whiteHouse : blackHouse;
-        let pieceClassName = getPiecePosition(position)
+    const housePiece = (alphabetIndex, index) => {
+        const whiteHouse = "WhiteHouse";
+        const blackHouse = "BlackHouse";
+        const position = colunmAlphabet[alphabetIndex] + (index);
+        const colorHouse = alphabetIndex % 2 === 0 ? whiteHouse : blackHouse;
+        const pieceClassName = getPiecePosition(position)
+        let pieceClass = [];
 
         if (colorHouse === whiteHouse && index % 2 !== 0) {
-            colorHouse = blackHouse + ' ' + pieceClassName;
+            pieceClass = pieceClass.concat(blackHouse).concat(pieceClassName.finalClassName);
         } else
-            if (colorHouse === blackHouse && index % 2 !== 0) {
-                colorHouse = whiteHouse + ' ' + pieceClassName
-            } else {
-                colorHouse = colorHouse + ' ' + pieceClassName;
-            }
+        if (colorHouse === blackHouse && index % 2 !== 0) {
+            pieceClass = pieceClass.concat(whiteHouse).concat(pieceClassName.finalClassName)
+        } else {
+            pieceClass = pieceClass.concat(colorHouse).concat(pieceClassName.finalClassName);
+        };
 
 
-        return colorHouse;
+        return { pieceClass, pieceClassName };
     }
 
     const getPiecePosition = (position) => {
         let houseClassName, houseColor = "";
-        let isPawn, isTower, isHorse, isBishop, isQueen, isKing;
+        let uuid;
+        const whitePieces = PieceModel.WhitePieces();
+        const blackPieces = PieceModel.BlackPieces();
+        const whitePiecesPositions = whitePieces.flatMap(whitePiece => whitePiece.map(piece => piece.StartPosition));
+        const blackPiecePositions = blackPieces.flatMap(whitePiece => whitePiece.map(piece => piece.StartPosition));
 
-        isPawn = whiteInitialPosition.pawn.find(x => x === position);
-        isTower = whiteInitialPosition.tower.find(x => x === position);
-        isHorse = whiteInitialPosition.horse.find(x => x === position);
-        isBishop = whiteInitialPosition.bishop.find(x => x === position);
-        isQueen = whiteInitialPosition.queen.find(x => x === position);
-        isKing = whiteInitialPosition.king.find(x => x === position);
+        if(whitePiecesPositions.includes(position))
+        {
+            houseColor = "White";
+            const piece = whitePieces.map(pieces => pieces.find(p => p.StartPosition === position)).find(x => x);
+            houseClassName = piece.Name;
+            uuid = piece.Id;
 
-        if ([isPawn, isTower, isHorse, isBishop, isQueen, isKing].find(x => x)) {
-            houseColor = "White"
-        } else {
-            isPawn = blackInitialPosition.pawn.find(x => x === position);
-            isTower = blackInitialPosition.tower.find(x => x === position);
-            isHorse = blackInitialPosition.horse.find(x => x === position);
-            isBishop = blackInitialPosition.bishop.find(x => x === position);
-            isQueen = blackInitialPosition.queen.find(x => x === position);
-            isKing = blackInitialPosition.king.find(x => x === position);
-        };
-
-        if ([isPawn, isTower, isHorse, isBishop, isQueen, isKing].find(x => x) && !!!houseColor) {
-            houseColor = "Black"
-        };
-
-        switch (position) {
-            case isPawn:
-                houseClassName = pieceNames.pawn;
-                break;
-            case isTower:
-                houseClassName = pieceNames.tower;
-                break;
-            case isHorse:
-                houseClassName = pieceNames.horse;
-                break;
-            case isBishop:
-                houseClassName = pieceNames.bishop;
-                break;
-            case isQueen:
-                houseClassName = pieceNames.queen;
-                break;
-            case isKing:
-                houseClassName = pieceNames.king;
-                break;
-            default:
-                houseClassName = "void";
-                break;
+        } else if (blackPiecePositions.includes(position))
+        {
+            houseColor = "Black";
+            const piece = blackPieces.map(pieces => pieces.find(p => p.StartPosition === position)).find(x => x);
+            houseClassName = piece.Name;
+            uuid = piece.Id;
+        }else{
+            houseClassName = "Void"
         }
 
-        houseClassName = houseClassName.charAt(0).toUpperCase() + houseClassName.slice(1);
+        const finalClassName = houseColor + houseClassName;
 
-        return houseColor + houseClassName;
+        return { finalClassName, uuid};
     }
 
     const movePiece = (piecePosition, div) => {
@@ -131,6 +84,9 @@ function Table() {
 
         if (moveToEat) {
             let previousPiece = document.getElementById(selectedHousePosition);
+            if (!movedHouses.findIndex(x => x?.pieceType === pieceName && x?.originalId === piecePosition) <= 0) {
+                setMovedHouses(movedHouses.concat([{ originalId: previousPiece.attributes.uuid.value }]));
+            }
 
             if (pieceName !== "Void") {
                 pieceName.includes("White") ?
@@ -142,14 +98,17 @@ function Table() {
             {
                 div.target.parentElement.classList.add(selectedHouse);//next house turns into the select piece
                 div.target.parentElement.classList.remove(pieceName);//next house lost their old class name
+                div.target.parentElement.setAttribute("uuid",previousPiece.attributes.uuid.value);
                 
             } else {
                 div.target.classList.add(selectedHouse);//next house turns into the select piece
                 div.target.classList.remove(pieceName);//next house lost their old class name
+                div.target.setAttribute("uuid",previousPiece.attributes.uuid.value);
             }
             
             previousPiece.classList.remove(selectedHouse); //previous house lost the piece that was there
             previousPiece.classList.add("Void"); //previous piece turns into a cleared house
+            previousPiece.setAttribute("uuid", undefined);
 
             removeOtherPossibilities();
         } else {
@@ -172,33 +131,31 @@ function Table() {
     }
 
     const removeOtherPossibilities = () => {
-        let removePossibility = Object.values(document.getElementsByClassName('possibleMove'));
-        let houseSelected = Object.values(document.getElementsByClassName('selectedHouse'));
+        const removePossibility = Object.values(document.getElementsByClassName('possibleMove'));
+        const houseSelected = Object.values(document.getElementsByClassName('selectedHouse'));
 
         //essa função retorna mto erro
         if (removePossibility?.flat(x => x?.classList).length > 0) {
             removePossibility?.map(x => 
                 x?.classList.remove('possibleMove')
             );
-            removePossibility.find(x => x?.parentElement.classList.contains("Void")).parentElement.style.cursor = "unset";
+            const div = removePossibility.find(x => x?.parentElement.classList.contains("Void"));
+            if (!!div) {
+                div.parentElement.style.cursor = "unset"
+            }
         };
 
         houseSelected.map(x => {
-            x?.classList.remove('selectedHouse');
-            x.style.cursor = "unset"; 
+            return (x.classList.remove('selectedHouse'), x.style.cursor = "unset")
         }); //remove the house select by user
     }
 
     const possiblePositions = (actuallyPiecePosition, pieceType) => {
         let futuresPositions = [];
-        let letter = actuallyPiecePosition.charAt(0);
-        let index = actuallyPiecePosition.charAt(1);
-        let letterIndex = colunmAlphabet.indexOf(letter);
-        let pieceName = pieceType.replace('White', '').replace('Black', '').toLowerCase();
+        let pieceName = pieceType.replace('White', '').replace('Black', '');
         const color = pieceType.includes("White") ? "White" : "Black"
 
-
-        futuresPositions = SingleMove(pieceName, actuallyPiecePosition, color).possibleMoves
+        futuresPositions = SingleMove(pieceName, actuallyPiecePosition, color, movedHouses).possibleMoves;
 
         removeOtherPossibilities();
         futuresPositions.map(x => setColor(x, 'green', true));
@@ -207,19 +164,16 @@ function Table() {
     const renderColunm = (letter, collorIndex) => {
         return (
             colunmLimit.map((i) => {
-                var colorHouse = color(collorIndex, i)
+                const houseProps = housePiece(collorIndex, i)
                 let pieceId = letter + i;
                 return (
-                    <div
-                        id={pieceId}
-                        className={"singleHouse " + colorHouse}
-                        onClick={(e) => movePiece(pieceId, e)}
-                    >
-                        <div
-                            id={`${pieceId}-children`}
-                            className={"children"}
-                        />
-                    </div>
+                    <Piece
+                        pieceId = {pieceId}
+                        houseColor={houseProps.pieceClass}
+                        originalId = {pieceId}
+                        onClick = {movePiece}
+                        uuid = {houseProps.pieceClassName.uuid }
+                    />
                 )
             }
             )
