@@ -12,20 +12,23 @@ $WhiteBishop: url('./ChessPieces/ChessWhiteBishop.png');
 $WhiteQueen: url('./ChessPieces/ChessWhiteQueen.png');
 $WhiteKing: url('./ChessPieces/ChessWhiteKing.png');
 
+$BlackWoodenBackground: url('./ChessPieces/woodenHouse.jpg');
+$LightWoodenBackground: url('./ChessPieces/lightWoodenHouse.jpg');
+
 .singleHouse {
     width: 61px;
     height: 61px;
-    cursor: pointer;
+    cursor: unset;
     margin: 0.01px 0 0.01px 0;
 }
 
 .whiteHouse {
-    background-color: white;
+    background-image: $LightWoodenBackground;
     color: black;
 }
 
 .blackHouse {
-    background-color: #578bff;
+    background-image: $BlackWoodenBackground;
     color: white;
 }
 
@@ -34,6 +37,7 @@ $WhiteKing: url('./ChessPieces/ChessWhiteKing.png');
     margin-right: auto;
     margin-top: 50px;
     border: 0.1px solid black;
+    max-width: 488px;
 }
 
 .mergedHouses{
@@ -46,58 +50,72 @@ $WhiteKing: url('./ChessPieces/ChessWhiteKing.png');
 }
 
 .possibleMove {
-    width: 58.77px;
-    height: 58.77px;
-    background-color: rgb(55, 228, 11);
-    border: solid rgba(38, 38, 102, 0.568);
-    border-width: 0.02em;
+    width: 30px;
+    height: 30px;
+    background-color: #887d4973;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15.77px;
+    margin-bottom: 15.77px;
     cursor: pointer;
 }
 
 .selectedHouse {
-    width: 58.77px;
-    height: 58.77px;
+    width: 61px;
+    height: 61px;
+    background-image: none;
     background-color: yellow;
-    border: solid black;
-    border-width: 0.02em;
     cursor: pointer;
 }
 
 .BlackPawn {
     content: $BlackPawn;
+    cursor: pointer !important;
 }
 .BlackTower {
     content: $BlackTower;
+    cursor: pointer !important;
 }
 .BlackHorse {
     content: $BlackHorse;
+    cursor: pointer !important;
 }
 .BlackBishop {
     content: $BlackBishop;
+    cursor: pointer !important;
 }
 .BlackQueen {
     content: $BlackQueen;
+    cursor: pointer !important;
 }
 .BlackKing {
     content: $BlackKing;
+    cursor: pointer !important;
 }
 
 
 .WhitePawn {
     content: $WhitePawn;
+    cursor: pointer !important;
 }
 .WhiteTower {
     content: $WhiteTower;
+    cursor: pointer !important;
 }
 .WhiteHorse {
     content: $WhiteHorse;
+    cursor: pointer !important;
 }
 .WhiteBishop {
     content: $WhiteBishop;
+    cursor: pointer !important;
 }
 .WhiteQueen {
     content: $WhiteQueen;
+    cursor: pointer !important;
 }
 .WhiteKing {
     content: $WhiteKing;
+    cursor: pointer !important;
 }
