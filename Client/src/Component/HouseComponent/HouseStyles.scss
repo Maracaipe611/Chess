@@ -1,0 +1,20 @@
+
+$BlackWoodenBackground: url('../../table/ChessPieces/woodenHouse.jpg');
+$LightWoodenBackground: url('../../table/ChessPieces/lightWoodenHouse.jpg');
+
+.White {
+    background-image: $LightWoodenBackground;
+    color: black;
+}
+
+.Black {
+    background-image: $BlackWoodenBackground;
+    color: white;
+}
+
+.singleHouse {
+    width: 61px;
+    height: 61px;
+    cursor: unset;
+    margin: 0.01px 0 0.01px 0;
+}

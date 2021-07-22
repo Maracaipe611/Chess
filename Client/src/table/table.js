@@ -4,6 +4,7 @@ import WsRequest from './Requests/requests';
 import SingleMove, {} from './MovePieces/Move'
 import Piece from '../Component/PieceComponent/PieceComponent';
 import PieceModel from '../Component/PieceModel/PieceModel';
+import House from '../Component/HouseComponent/HouseComponent';
 
 function Table() {
     const [selectedHouse, setSelectedHouse] = useState("");
@@ -21,7 +22,7 @@ function Table() {
     * If the colunm is 'unpair', will return the opposite  
     */
     const housePiece = (alphabetIndex, index) => {
-        const whiteHouse = "WhiteHouse";
+        /* const whiteHouse = "WhiteHouse";
         const blackHouse = "BlackHouse";
         const position = colunmAlphabet[alphabetIndex] + (index);
         const colorHouse = alphabetIndex % 2 === 0 ? whiteHouse : blackHouse;
@@ -38,11 +39,11 @@ function Table() {
         };
 
 
-        return { pieceClass, pieceClassName };
+        return { pieceClass, pieceClassName }; */
     }
 
     const getPiecePosition = (position) => {
-        let houseClassName, houseColor = "";
+        /* let houseClassName, houseColor = "";
         let uuid;
         const whitePieces = PieceModel.WhitePieces();
         const blackPieces = PieceModel.BlackPieces();
@@ -69,11 +70,11 @@ function Table() {
 
         const finalClassName = houseColor + houseClassName;
 
-        return { finalClassName, uuid};
+        return { finalClassName, uuid}; */
     }
 
     const movePiece = (piecePosition, div) => {
-        let pieceName;
+        /* let pieceName;
         WsRequest();
         const moveToEat = !!(div.target.classList.contains("possibleMove")) || !!(div.target.children[0]?.classList.contains("possibleMove"));
 
@@ -118,7 +119,7 @@ function Table() {
             setColor(piecePosition);
             setSelectedHouse(pieceName);
             setSelectedHousePosition(piecePosition);
-        }
+        } */
     }
 
     const setColor = (piece, actuallyPiece, futureMove) => {
@@ -192,16 +193,7 @@ function Table() {
     const renderColunm = (letter, collorIndex) => {
         return (
             colunmLimit.map((i) => {
-                const houseProps = housePiece(collorIndex, i)
-                const houseId = letter + i;
-                return (
-                    <Piece
-                        houseId={houseId}
-                        houseColor={houseProps.pieceClass}
-                        onClick = {movePiece}
-                        uuid = {houseProps.pieceClassName.uuid }
-                    />
-                )
+                return House(letter, i)
             }
             )
         )
@@ -209,10 +201,9 @@ function Table() {
 
 
     const finalTable = colunmLimit.map((number, i) => {
-        let letter = colunmAlphabet[i];
         return (
             <div className={"mergedHouses"}>
-                {renderColunm(letter, i)}
+                {renderColunm(i, number)}
             </div>)
     })
 

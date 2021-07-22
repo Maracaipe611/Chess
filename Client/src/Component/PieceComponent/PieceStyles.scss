@@ -12,26 +12,6 @@ $WhiteBishop: url('../../table/ChessPieces/ChessWhiteBishop.png');
 $WhiteQueen: url('../../table/ChessPieces/ChessWhiteQueen.png');
 $WhiteKing: url('../../table/ChessPieces/ChessWhiteKing.png');
 
-$BlackWoodenBackground: url('../../table/ChessPieces/woodenHouse.jpg');
-$LightWoodenBackground: url('../../table/ChessPieces/lightWoodenHouse.jpg');
-
-.singleHouse {
-    width: 61px;
-    height: 61px;
-    cursor: unset;
-    margin: 0.01px 0 0.01px 0;
-}
-
-.WhiteHouse {
-    background-image: $LightWoodenBackground;
-    color: black;
-}
-
-.BlackHouse {
-    background-image: $BlackWoodenBackground;
-    color: white;
-}
-
 .Void {
     cursor: unset;
 }
