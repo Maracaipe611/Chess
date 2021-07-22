@@ -56,6 +56,11 @@ $LightWoodenBackground: url('../../table/ChessPieces/lightWoodenHouse.jpg');
     cursor: pointer;
 }
 
+.Prey {
+    background-image: none !important;
+    background-color: rgba(249, 83, 3, 1);
+}
+
 .BlackPawn {
     content: $BlackPawn;
     cursor: pointer !important;

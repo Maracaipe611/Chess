@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 const PieceModel = () => {
     const colunmAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H"];
     const PieceNames = {

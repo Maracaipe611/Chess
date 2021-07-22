@@ -11,6 +11,7 @@ function Table() {
     const [whitePiecesAte, setWhitePiecesAte] = useState([]);
     const [blackPiecesAte, setBlackPiecesAte] = useState([]);
     const [movedHouses, setMovedHouses] = useState([{}]);
+    const [preyPieces, setPreyPieces] = useState([])
     const colunmAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H"];
     const colunmLimit = [8, 7, 6, 5, 4, 3, 2, 1];
 
@@ -61,7 +62,8 @@ function Table() {
             const piece = blackPieces.map(pieces => pieces.find(p => p.StartPosition === position)).find(x => x);
             houseClassName = piece.Name;
             uuid = piece.Id;
-        }else{
+        }else
+        {
             houseClassName = "Void"
         }
 
@@ -113,26 +115,47 @@ function Table() {
             removeOtherPossibilities();
         } else {
             possiblePositions(piecePosition, pieceName);
-            setColor(piecePosition, 'yellow');
+            setColor(piecePosition);
             setSelectedHouse(pieceName);
             setSelectedHousePosition(piecePosition);
         }
     }
 
-    const setColor = (piece, color, futureMove) => {
-        let divPiece = document.getElementById(piece);
+    const setColor = (piece, actuallyPiece, futureMove) => {
+        let futureHouseIsEnemy;
+
+        const futureDivPiece = document.getElementById(piece);
+        const actuallyDivPiece = document.getElementById(actuallyPiece);
+        const actuallyPieceUuid = actuallyDivPiece?.attributes.uuid.value;
+
+        const whitePieces = PieceModel.WhitePieces();
+        const whitePiecesId = whitePieces.flatMap(whitePiece => whitePiece.map(piece => piece.Id));
 
         if (futureMove) {
-            Object.values(divPiece.children).map(x => x.classList.add('possibleMove'));
-            divPiece.style.cursor = "pointer";
+            if(futureDivPiece.classList.contains("Void")){
+
+            Object.values(futureDivPiece.children).map(x => x.classList.add('possibleMove'));
+
+            }else {
+
+                const futureDivPieceUuid = futureDivPiece.attributes.uuid.value;
+                futureHouseIsEnemy = !(whitePiecesId.includes(futureDivPieceUuid) && whitePiecesId.includes(actuallyPieceUuid)) //confiro se as peças fzm parte do mesmo grupo
+
+                if (futureHouseIsEnemy)
+                {
+                    futureDivPiece.classList.add("Prey");
+                }
+            }
+            futureDivPiece.style.cursor = "pointer";
         } else {
-            divPiece?.classList.add('selectedHouse');
+            futureDivPiece?.classList.add('selectedHouse');
         }
     }
 
     const removeOtherPossibilities = () => {
         const removePossibility = Object.values(document.getElementsByClassName('possibleMove'));
         const houseSelected = Object.values(document.getElementsByClassName('selectedHouse'));
+        const killPossibility = Object.values(document.getElementsByClassName('Prey'));
 
         //essa função retorna mto erro
         if (removePossibility?.flat(x => x?.classList).length > 0) {
@@ -145,32 +168,36 @@ function Table() {
             }
         };
 
+        if (killPossibility) {
+            killPossibility?.map(x =>
+                x?.classList.remove('Prey')
+            );
+        };
+
         houseSelected.map(x => {
             return (x.classList.remove('selectedHouse'), x.style.cursor = "unset")
         }); //remove the house select by user
     }
 
     const possiblePositions = (actuallyPiecePosition, pieceType) => {
-        let futuresPositions = [];
         let pieceName = pieceType.replace('White', '').replace('Black', '');
         const color = pieceType.includes("White") ? "White" : "Black"
 
-        futuresPositions = SingleMove(pieceName, actuallyPiecePosition, color, movedHouses).possibleMoves;
+        const futuresPositions = SingleMove(pieceName, actuallyPiecePosition, color, movedHouses);
 
         removeOtherPossibilities();
-        futuresPositions.map(x => setColor(x, 'green', true));
+        futuresPositions.map(x => setColor(x, actuallyPiecePosition, true));
     }
 
     const renderColunm = (letter, collorIndex) => {
         return (
             colunmLimit.map((i) => {
                 const houseProps = housePiece(collorIndex, i)
-                let pieceId = letter + i;
+                const houseId = letter + i;
                 return (
                     <Piece
-                        pieceId = {pieceId}
+                        houseId={houseId}
                         houseColor={houseProps.pieceClass}
-                        originalId = {pieceId}
                         onClick = {movePiece}
                         uuid = {houseProps.pieceClassName.uuid }
                     />

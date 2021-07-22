@@ -1,14 +1,5 @@
 const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
     const colunmAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H"];
-    const originalPositions = {
-        pawn: ['A2', 'B2', 'C2', 'D2', 'E2', 'F2', 'G2', 'H2', 'A7', 'B7', 'C7', 'D7', 'E7', 'F7', 'G7', 'H7'],
-        tower: ['A1', 'H1', 'A8', 'H8'],
-        horse: ['B1', 'G1', 'B8', 'G8'],
-        bishop: ['C1', 'F1', 'C8', 'F8'],
-        king: ['E1', 'E8'],
-        queen: ['D1', 'D8']
-    };
-
     var directionToIgnore = [];
 
     class pieceModel {
@@ -97,9 +88,27 @@ const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
             [5, 5, direction.UpSideRight],
             [6, 6, direction.UpSideRight],
             [7, 7, direction.UpSideRight],
-            [1, -1, direction.UpSideLeft], [2, -2, direction.UpSideLeft], [3, -3, direction.UpSideLeft], [4, -4, direction.UpSideLeft], [5, -5, direction.UpSideLeft], [6, -6, direction.UpSideLeft], [7, -7, direction.UpSideLeft],//UpSideLeft,
-            [-1, 1, direction.DownSideRight], [-2, 2, direction.DownSideRight], [-3, 3, direction.DownSideRight], [-4, 4, direction.DownSideRight], [-5, 5, direction.DownSideRight], [-6, 6, direction.DownSideRight], [-7, 7, direction.DownSideRight],//DownSideRight
-            [-1, -1, direction.DownSideLeft], [-2, -2, direction.DownSideLeft], [-3, -3, direction.DownSideLeft], [-4, -4, direction.DownSideLeft], [-5, -5, direction.DownSideLeft], [-6, -6, direction.DownSideLeft], [-7, -7, direction.DownSideLeft]//DownSideLeft
+            [1, -1, direction.UpSideLeft],
+            [2, -2, direction.UpSideLeft],
+            [3, -3, direction.UpSideLeft],
+            [4, -4, direction.UpSideLeft],
+            [5, -5, direction.UpSideLeft],
+            [6, -6, direction.UpSideLeft],
+            [7, -7, direction.UpSideLeft],
+            [-1, 1, direction.DownSideRight],
+            [-2, 2, direction.DownSideRight],
+            [-3, 3, direction.DownSideRight],
+            [-4, 4, direction.DownSideRight],
+            [-5, 5, direction.DownSideRight],
+            [-6, 6, direction.DownSideRight],
+            [-7, 7, direction.DownSideRight],
+            [-1, -1, direction.DownSideLeft],
+            [-2, -2, direction.DownSideLeft],
+            [-3, -3, direction.DownSideLeft],
+            [-4, -4, direction.DownSideLeft],
+            [-5, -5, direction.DownSideLeft],
+            [-6, -6, direction.DownSideLeft],
+            [-7, -7, direction.DownSideLeft]
         ];
         return bishop;
     };
@@ -189,7 +198,7 @@ const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
 
     const firstPieceMove = (movedHouses, actuallyPosition) => {
         const houveDiv = document.getElementById(actuallyPosition);
-        const Uuid = houveDiv.attributes.uuid.value;
+        const Uuid = houveDiv?.attributes.uuid.value;
         if (!!movedHouses.find(x => x.originalId === Uuid))
         {
             return false;
@@ -201,13 +210,12 @@ const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
     {
         let possibleMoves = [];
         let possibleMovesToEat = [];
-        let firstMove;
+        const firstMove  = pieceName !== "Void" ? firstPieceMove(movedHouses, actuallyPosition) : null;
         let pieceMovement = getMove(pieceName);
         const Index = getIndex(actuallyPosition);
         switch (pieceName) {
             case Queen().Name:
-                //firstMove = firstPieceMove(Queen().Name, movedHouses);
-                pieceMovement.map(move => { //[5, 0]
+                pieceMovement.map(move => {
                     
                     if (!respectLimit(move, Index)) {
                         return null;
@@ -228,15 +236,13 @@ const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
                     if (movingToEat)
                     {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection)) //filtra a direção que a peça está indo, para que não atravesse outras casas
-                        return possibleMovesToEat.push(moveIndex);; //atualizar a array enquanto mapeia a própria array não é uma boa ideia
+                        possibleMovesToEat.push(moveIndex);; //atualizar a array enquanto mapeia a própria array não é uma boa ideia
                     }
 
-                    return possibleMoves.push(moveIndex);
+                    possibleMoves.push(moveIndex);
                 });
                 break;
-
             case Pawn().Name:
-                firstMove = firstPieceMove(movedHouses, actuallyPosition);
                 pieceMovement.map(move => {
                     if (!respectLimit(move, Index)){
                         return null;
@@ -245,22 +251,27 @@ const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
                     const pieceDirection = move[2];
                     const sumResult = respectLimit(move, Index);
                     const houseTarget = document.getElementById(sumResult);
-                    const movingToEat = !houseTarget.classList.contains("Void") && (pieceDirection !== direction.UpSide);
+                    const houseTargetUuid = houseTarget?.attributes.uuid?.value;
+                    const movingToEat = !houseTarget.classList.contains("Void") && !!houseTargetUuid;
                     const moveIndex = getIndexInStringSummed(Index, move);
                     const isTheSameColor = houseTarget.classList[2].startsWith(color);
                     if (isTheSameColor) {
                         return null;
                     }
+
+                    //first move can be double house
                      if (!firstMove && pieceDirection === direction.UpSideDouble) {
                         return null;
                     };
-
-                    if (movingToEat || pieceDirection === direction.UpSideLeft || pieceDirection ===  direction.UpSideRight)
+                    //move forward and only eat on the left/right side
+                    if ((!movingToEat && (pieceDirection !== direction.UpSide && pieceDirection !== direction.UpSideDouble))
+                        || (movingToEat && (pieceDirection === direction.UpSide || pieceDirection === direction.UpSideDouble)))
                     {
-                        return possibleMovesToEat.push(moveIndex);
-                    }
+                        return null;
+                    };
 
-                    return possibleMoves.push(moveIndex);
+                    possibleMoves.push(moveIndex);
+
                 });
                 break;
             case Horse().Name:
@@ -278,9 +289,6 @@ const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
                         return null;
                     }
 
-                    if (movingToEat) {
-                        possibleMovesToEat.push(moveIndex);
-                    }
                     possibleMoves.push(moveIndex);
                 });
                 break;
@@ -296,12 +304,15 @@ const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
                     const movingToEat = !houseTarget.classList.contains("Void");
                     const moveIndex = getIndexInStringSummed(Index, move);
                     const isTheSameColor = houseTarget.classList[2].startsWith(color);
-                    if (isTheSameColor) {
+                    if (isTheSameColor)
+                    {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))
                         return null;
                     }
 
-                    if (movingToEat) {
+                    if (movingToEat)
+                    {
+                        directionToIgnore = (directionToIgnore.concat(pieceDirection))
                         possibleMovesToEat.push(moveIndex);
                     }
                     possibleMoves.push(moveIndex);
@@ -341,11 +352,13 @@ const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
                     const movingToEat = !houseTarget.classList.contains("Void");
                     const moveIndex = getIndexInStringSummed(Index, move);
                     const isTheSameColor = houseTarget.classList[2].startsWith(color);
-                    if (isTheSameColor) {
+                    if (isTheSameColor)
+                    {
                         return null;
                     }
 
-                    if (movingToEat) {
+                    if (movingToEat)
+                    {
                         possibleMovesToEat.push(moveIndex);
                     }
                     possibleMoves.push(moveIndex);
@@ -356,7 +369,7 @@ const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
                 possibleMoves = [];
                 break;
         }
-        return {possibleMoves, possibleMovesToEat};
+        return possibleMoves;
     }
     return possibleMoves(pieceName, piecePosition, movedHouses);
 }

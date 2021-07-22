@@ -9,14 +9,14 @@ const Piece = (props) => {
 
         return (
             <div
-                id = {props.pieceId}
+                id={props.houseId}
                 className={classes}
-                onClick={(e) => props.onClick(props.pieceId, e)}
+                onClick={(e) => props.onClick(props.houseId, e)}
                 uuid = {props.uuid}
             >
                 <div
-                id={`${props.pieceId}-children`}
-                className={"children"}
+                    id={`${props.houseId}-children`}
+                    className={"children"}
                 />
             </div>
         )
