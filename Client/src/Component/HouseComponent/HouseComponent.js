@@ -68,6 +68,7 @@ const House = (props) => {
                     originalHouse = {singleHouse.Id}
                     onClick = {props.onClick}
                     PossibleMove = {props.PossibleMove}
+                    AllPieces = {props.AllPieces}
                 />
             </div>
         )

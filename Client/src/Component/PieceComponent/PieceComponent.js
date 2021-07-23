@@ -1,46 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import './PieceStyles.scss'
 import PieceModel from "../PieceModel/PieceModel";
 import PieceNames from "../../Utils/PieceNamesArray";
 const Piece = (props) => {
     const pieceNames = PieceNames;
     const possibleMove = !!(props.PossibleMove.find(x => x === props.originalHouse));
+    const [CurrentPiece, setCurrentPiece] = useState();
 
-    const getOriginalPiece = () => {
+    useEffect(() => {
         const houseIndex = props.originalHouse;
-        const allPieces = PieceModel;
-
         let piece;
-        piece = allPieces().WhitePieces().flatMap(whitePieces =>
+        piece = props.AllPieces?.WhitePieces().flatMap(whitePieces =>
             whitePieces.filter(pieces =>
                 pieces)).find(finalPiece =>
-                    finalPiece.StartPosition === houseIndex);
+                    finalPiece.CurrentHouse === houseIndex);
 
-        if (!!!piece) {
-            piece = allPieces().BlackPieces().flatMap(blackPieces =>
+        if (!piece) {
+            piece = props.AllPieces?.BlackPieces().flatMap(blackPieces =>
                 blackPieces.filter(pieces =>
                     pieces)).find(finalPiece =>
-                        finalPiece.StartPosition === houseIndex);
+                        finalPiece.CurrentHouse === houseIndex);
         }
 
-        return piece;
-    }
+        setCurrentPiece(piece);
+    }, [props.AllPieces])
 
-    const getImageClassName = (piece) => {
-        if (piece.Name === pieceNames.void) return null;
+    const getImageClassName = () => {
+        if (CurrentPiece.Name === pieceNames.void) return null;
         return (
-            piece.Color + piece.Name
+            CurrentPiece.Color + CurrentPiece.Name
         )
     }
     const component = () => {
-        const piece = getOriginalPiece();
         return possibleMove ?
             <div className={"possibleMove"}/>
             :
-            !piece && <div
-                data-pieceid={piece.Id}
-                data-piececolor={piece.Name === pieceNames.void ? "" : piece.Color}
-                className={(piece === pieceNames.void ? pieceNames.void : piece.Name) + " " + getImageClassName(piece)}
+            !!CurrentPiece && <div
+                data-pieceid={CurrentPiece.Id}
+                data-piececolor={CurrentPiece.Name === pieceNames.void ? "" : CurrentPiece.Color}
+                className={(CurrentPiece === pieceNames.void ? pieceNames.void : CurrentPiece.Name) + " " + getImageClassName()}
             />
     }
     return component();
