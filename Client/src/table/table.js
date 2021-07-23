@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './tableStyles.scss';
 import WsRequest from './Requests/requests';
 import SingleMove, {} from './MovePieces/Move'
 import Piece from '../Component/PieceComponent/PieceComponent';
 import PieceModel from '../Component/PieceModel/PieceModel';
 import House from '../Component/HouseComponent/HouseComponent';
+import TableInteractions from './TableInteractions';
+import PieceNames from '../Utils/PieceNamesArray';
 
 function Table() {
     const [selectedHouse, setSelectedHouse] = useState("");
-    const [selectedHousePosition, setSelectedHousePosition] = useState("");
+    const [selectedPiece, setSelectedPiece] = useState("");
     const [whitePiecesAte, setWhitePiecesAte] = useState([]);
     const [blackPiecesAte, setBlackPiecesAte] = useState([]);
     const [movedHouses, setMovedHouses] = useState([{}]);
+    const [possibleMove, setPossibleMove] = useState([]);
     const [preyPieces, setPreyPieces] = useState([])
     const colunmAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H"];
     const colunmLimit = [8, 7, 6, 5, 4, 3, 2, 1];
+    const piecesNames = PieceNames;
 
     /*
     * Return the class of the house based on:
@@ -73,7 +77,22 @@ function Table() {
         return { finalClassName, uuid}; */
     }
 
-    const movePiece = (piecePosition, div) => {
+    const movePiece = (piece) => {
+        const { SelectHouse, PossiblePositions } =  TableInteractions();
+        SelectHouse(piece);
+        setSelectedHouse(piece.houseDiv.id)
+        const houseHasPiece = !(piece.pieceId === piecesNames.void)
+        const selectingToMove = !houseHasPiece && Object.values(piece.houseDiv.children).find(x => x).classList.contains("possibleMove");
+
+        if (houseHasPiece && piece.pieceId !== selectedPiece)
+        {
+            const ableHouses = PossiblePositions(piece, movedHouses);
+            setPossibleMove(ableHouses)
+            setSelectedPiece(piece.pieceId)
+        }else if(selectingToMove)
+        {
+            console.log("Usuário clicou para mover a peça")
+        }
         /* let pieceName;
         WsRequest();
         const moveToEat = !!(div.target.classList.contains("possibleMove")) || !!(div.target.children[0]?.classList.contains("possibleMove"));
@@ -122,78 +141,16 @@ function Table() {
         } */
     }
 
-    const setColor = (piece, actuallyPiece, futureMove) => {
-        let futureHouseIsEnemy;
-
-        const futureDivPiece = document.getElementById(piece);
-        const actuallyDivPiece = document.getElementById(actuallyPiece);
-        const actuallyPieceUuid = actuallyDivPiece?.attributes.uuid.value;
-
-        const whitePieces = PieceModel.WhitePieces();
-        const whitePiecesId = whitePieces.flatMap(whitePiece => whitePiece.map(piece => piece.Id));
-
-        if (futureMove) {
-            if(futureDivPiece.classList.contains("Void")){
-
-            Object.values(futureDivPiece.children).map(x => x.classList.add('possibleMove'));
-
-            }else {
-
-                const futureDivPieceUuid = futureDivPiece.attributes.uuid.value;
-                futureHouseIsEnemy = !(whitePiecesId.includes(futureDivPieceUuid) && whitePiecesId.includes(actuallyPieceUuid)) //confiro se as peças fzm parte do mesmo grupo
-
-                if (futureHouseIsEnemy)
-                {
-                    futureDivPiece.classList.add("Prey");
-                }
-            }
-            futureDivPiece.style.cursor = "pointer";
-        } else {
-            futureDivPiece?.classList.add('selectedHouse');
-        }
-    }
-
-    const removeOtherPossibilities = () => {
-        const removePossibility = Object.values(document.getElementsByClassName('possibleMove'));
-        const houseSelected = Object.values(document.getElementsByClassName('selectedHouse'));
-        const killPossibility = Object.values(document.getElementsByClassName('Prey'));
-
-        //essa função retorna mto erro
-        if (removePossibility?.flat(x => x?.classList).length > 0) {
-            removePossibility?.map(x => 
-                x?.classList.remove('possibleMove')
-            );
-            const div = removePossibility.find(x => x?.parentElement.classList.contains("Void"));
-            if (!!div) {
-                div.parentElement.style.cursor = "unset"
-            }
-        };
-
-        if (killPossibility) {
-            killPossibility?.map(x =>
-                x?.classList.remove('Prey')
-            );
-        };
-
-        houseSelected.map(x => {
-            return (x.classList.remove('selectedHouse'), x.style.cursor = "unset")
-        }); //remove the house select by user
-    }
-
-    const possiblePositions = (actuallyPiecePosition, pieceType) => {
-        let pieceName = pieceType.replace('White', '').replace('Black', '');
-        const color = pieceType.includes("White") ? "White" : "Black"
-
-        const futuresPositions = SingleMove(pieceName, actuallyPiecePosition, color, movedHouses);
-
-        removeOtherPossibilities();
-        futuresPositions.map(x => setColor(x, actuallyPiecePosition, true));
-    }
-
     const renderColunm = (letter, collorIndex) => {
         return (
             colunmLimit.map((i) => {
-                return House(letter, i)
+                return <House
+                AlphabetIndex={letter}
+                NumberIndex={i}
+                onClick = {movePiece}
+                PossibleMove = {possibleMove}
+                SelectedHouse = {selectedHouse}
+                />
             }
             )
         )

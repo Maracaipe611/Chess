@@ -4,14 +4,12 @@ import PieceModel from "../PieceModel/PieceModel";
 import PieceNames from "../../Utils/PieceNamesArray";
 const Piece = (props) => {
     const pieceNames = PieceNames;
+    const possibleMove = !!(props.PossibleMove.find(x => x === props.originalHouse));
 
     const getOriginalPiece = () => {
         const houseIndex = props.originalHouse;
         const allPieces = PieceModel;
-        const voidPiece = {
-            Id: null,
-            Name: "Void"
-        };
+
         let piece;
         piece = allPieces().WhitePieces().flatMap(whitePieces =>
             whitePieces.filter(pieces =>
@@ -25,26 +23,25 @@ const Piece = (props) => {
                         finalPiece.StartPosition === houseIndex);
         }
 
-        return !!piece ? piece : voidPiece;
+        return piece;
     }
 
-    const getImage = (piece) => {
+    const getImageClassName = (piece) => {
         if (piece.Name === pieceNames.void) return null;
         return (
-            <div className={piece.Color + piece.Name} />
+            piece.Color + piece.Name
         )
     }
     const component = () => {
         const piece = getOriginalPiece();
-        return (
-            <div
-                pieceid={piece.Id}
-                piececolor={piece.Name === pieceNames.void ? "" : piece.Color}
-                className={piece === pieceNames.void ? pieceNames.void : piece.Name}
-            >
-                {getImage(piece)}
-            </div>
-        )
+        return possibleMove ?
+            <div className={"possibleMove"}/>
+            :
+            !piece && <div
+                data-pieceid={piece.Id}
+                data-piececolor={piece.Name === pieceNames.void ? "" : piece.Color}
+                className={(piece === pieceNames.void ? pieceNames.void : piece.Name) + " " + getImageClassName(piece)}
+            />
     }
     return component();
 }

@@ -18,3 +18,12 @@ $LightWoodenBackground: url('../../table/ChessPieces/lightWoodenHouse.jpg');
     cursor: unset;
     margin: 0.01px 0 0.01px 0;
 }
+
+
+.selectedHouse {
+    width: 61px;
+    height: 61px;
+    background-image: none !important;
+    background-color: yellow;
+    cursor: pointer;
+}

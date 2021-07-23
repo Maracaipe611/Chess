@@ -1,4 +1,4 @@
-const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
+const SingleMove = (pieceObj, piecePosition, color, movedHouses) => {
     const colunmAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H"];
     var directionToIgnore = [];
 
@@ -196,24 +196,22 @@ const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
         return sumResult;
     }
 
-    const firstPieceMove = (movedHouses, actuallyPosition) => {
-        const houveDiv = document.getElementById(actuallyPosition);
-        const Uuid = houveDiv?.attributes.uuid.value;
-        if (!!movedHouses.find(x => x.originalId === Uuid))
+    const firstPieceMove = (movedHouses, pieceObj) => {
+        if (!!movedHouses.find(x => x.pieceId === pieceObj.Id))
         {
             return false;
         }
         return true;
     }
 
-    const possibleMoves = (pieceName, actuallyPosition, movedHouses) =>
+    const possibleMoves = (pieceObj, actuallyPosition, movedHouses) =>
     {
         let possibleMoves = [];
         let possibleMovesToEat = [];
-        const firstMove  = pieceName !== "Void" ? firstPieceMove(movedHouses, actuallyPosition) : null;
-        let pieceMovement = getMove(pieceName);
+        const firstMove  = firstPieceMove(movedHouses, pieceObj)
+        let pieceMovement = getMove(pieceObj.Name);
         const Index = getIndex(actuallyPosition);
-        switch (pieceName) {
+        switch (pieceObj.Name) {
             case Queen().Name:
                 pieceMovement.map(move => {
                     
@@ -250,11 +248,11 @@ const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
 
                     const pieceDirection = move[2];
                     const sumResult = respectLimit(move, Index);
-                    const houseTarget = document.getElementById(sumResult);
-                    const houseTargetUuid = houseTarget?.attributes.uuid?.value;
-                    const movingToEat = !houseTarget.classList.contains("Void") && !!houseTargetUuid;
+                    const houseTarget = Object.values(document.getElementById(sumResult)?.children)?.find(x => x);
+                    const houseTargetId = houseTarget?.dataset.pieceid;
+                    const movingToEat = !!houseTargetId;
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = houseTarget.classList[2].startsWith(color);
+                    const isTheSameColor = houseTarget?.dataset.piececolor === pieceObj.Color
                     if (isTheSameColor) {
                         return null;
                     }
@@ -371,7 +369,7 @@ const SingleMove = (pieceName, piecePosition, color, movedHouses) => {
         }
         return possibleMoves;
     }
-    return possibleMoves(pieceName, piecePosition, movedHouses);
+    return possibleMoves(pieceObj, piecePosition, movedHouses);
 }
 
 export default SingleMove;
