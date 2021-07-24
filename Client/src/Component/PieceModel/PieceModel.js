@@ -7,15 +7,15 @@ const PieceModel = () => {
         Black: "Black",
         White: "White"
     };
-    const WhitePieces = () => {
-        return [
+    const AllPieces = [
             alphabetArray.map((letter, i) => {
                 const Name = PieceNames.pawn;
                 const StartPosition = letter + 2;
                 const Id = i + Name + StartPosition;
                 const Color = Colors.White;
                 let CurrentHouse = StartPosition;
-                return { Id, Name, StartPosition, Color, CurrentHouse }
+                let Ativo = true;
+                return { Id, Name, StartPosition, Color, CurrentHouse, Ativo }
             }),
             ["A", "H"].map((letter, i) => {
                 const Name = PieceNames.tower;
@@ -23,7 +23,8 @@ const PieceModel = () => {
                 const Id = i + Name + StartPosition;
                 const Color = Colors.White;
                 let CurrentHouse = StartPosition;
-                return { Id, Name, StartPosition, Color, CurrentHouse }
+                let Ativo = true;
+                return { Id, Name, StartPosition, Color, CurrentHouse, Ativo }
             }),
             ['B', 'G'].map((letter, i) => {
                 const Name = PieceNames.horse;
@@ -31,7 +32,8 @@ const PieceModel = () => {
                 const Id = i + Name + StartPosition;
                 const Color = Colors.White;
                 let CurrentHouse = StartPosition;
-                return { Id, Name, StartPosition, Color, CurrentHouse }
+                let Ativo = true;
+                return { Id, Name, StartPosition, Color, CurrentHouse, Ativo }
             }),
             ['C', 'F'].map((letter, i) => {
                 const Name = PieceNames.bishop;
@@ -39,7 +41,8 @@ const PieceModel = () => {
                 const Id = i + Name + StartPosition;
                 const Color = Colors.White;
                 let CurrentHouse = StartPosition;
-                return { Id, Name, StartPosition, Color, CurrentHouse }
+                let Ativo = true;
+                return { Id, Name, StartPosition, Color, CurrentHouse, Ativo }
             }),
             ['E'].map((letter, i) => {
                 const Name = PieceNames.king;
@@ -47,7 +50,8 @@ const PieceModel = () => {
                 const Id = i + Name + StartPosition;
                 const Color = Colors.White;
                 let CurrentHouse = StartPosition;
-                return { Id, Name, StartPosition, Color, CurrentHouse }
+                let Ativo = true;
+                return { Id, Name, StartPosition, Color, CurrentHouse, Ativo }
             }),
             ['D'].map((letter, i) => {
                 const Name = PieceNames.queen;
@@ -55,19 +59,18 @@ const PieceModel = () => {
                 const Id = i + Name + StartPosition;
                 const Color = Colors.White;
                 let CurrentHouse = StartPosition;
-                return { Id, Name, StartPosition, Color, CurrentHouse }
-            })
-        ]
-    };
-    const BlackPieces = () => {
-        return [
+                let Ativo = true;
+                return { Id, Name, StartPosition, Color, CurrentHouse, Ativo }
+            }),
+            //BlackPieces
             alphabetArray.map((letter, i) => {
                 const Name = PieceNames.pawn;
                 const StartPosition = letter + 7;
                 const Id = i + Name + StartPosition;
                 const Color = Colors.Black;
                 let CurrentHouse = StartPosition;
-                return { Id, Name, StartPosition, Color, CurrentHouse }
+                let Ativo = true;
+                return { Id, Name, StartPosition, Color, CurrentHouse, Ativo }
             }),
             ["A", "H"].map((letter, i) => {
                 const Name = PieceNames.tower;
@@ -75,7 +78,8 @@ const PieceModel = () => {
                 const Id = i + Name + StartPosition;
                 const Color = Colors.Black;
                 let CurrentHouse = StartPosition;
-                return { Id, Name, StartPosition, Color, CurrentHouse }
+                let Ativo = true;
+                return { Id, Name, StartPosition, Color, CurrentHouse, Ativo }
             }),
             ['B', 'G'].map((letter, i) => {
                 const Name = PieceNames.horse;
@@ -83,7 +87,8 @@ const PieceModel = () => {
                 const Id = i + Name + StartPosition;
                 const Color = Colors.Black;
                 let CurrentHouse = StartPosition;
-                return { Id, Name, StartPosition, Color, CurrentHouse }
+                let Ativo = true;
+                return { Id, Name, StartPosition, Color, CurrentHouse, Ativo }
             }),
             ['C', 'F'].map((letter, i) => {
                 const Name = PieceNames.bishop;
@@ -91,7 +96,8 @@ const PieceModel = () => {
                 const Id = i + Name + StartPosition;
                 const Color = Colors.Black;
                 let CurrentHouse = StartPosition;
-                return { Id, Name, StartPosition, Color, CurrentHouse }
+                let Ativo = true;
+                return { Id, Name, StartPosition, Color, CurrentHouse, Ativo }
             }),
             ['E'].map((letter, i) => {
                 const Name = PieceNames.king;
@@ -99,7 +105,8 @@ const PieceModel = () => {
                 const Id = i + Name + StartPosition;
                 const Color = Colors.Black;
                 let CurrentHouse = StartPosition;
-                return { Id, Name, StartPosition, Color, CurrentHouse }
+                let Ativo = true;
+                return { Id, Name, StartPosition, Color, CurrentHouse, Ativo }
             }),
             ['D'].map((letter, i) => {
                 const Name = PieceNames.queen;
@@ -107,12 +114,12 @@ const PieceModel = () => {
                 const Id = i + Name + StartPosition;
                 const Color = Colors.Black;
                 let CurrentHouse = StartPosition;
-                return { Id, Name, StartPosition, Color, CurrentHouse }
+                let Ativo = true;
+                return { Id, Name, StartPosition, Color, CurrentHouse, Ativo }
             })
         ]
-    };
 
-    return { WhitePieces, BlackPieces, PieceNames }
+    return { AllPieces, PieceNames }
 };
 
 export default PieceModel;

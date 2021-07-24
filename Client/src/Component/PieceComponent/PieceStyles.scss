@@ -16,24 +16,6 @@ $WhiteKing: url('../../table/ChessPieces/ChessWhiteKing.png');
     cursor: unset;
 }
 
-.possibleMove {
-    width: 30px;
-    height: 30px;
-    background-color: #887d4973;
-    border-radius: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 15.77px;
-    margin-bottom: 15.77px;
-    cursor: pointer;
-}
-
-
-.Prey {
-    background-image: none !important;
-    background-color: rgba(249, 83, 3, 1);
-}
-
 .BlackPawn {
     content: $BlackPawn;
     cursor: pointer !important;

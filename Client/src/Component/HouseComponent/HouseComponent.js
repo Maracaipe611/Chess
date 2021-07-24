@@ -2,6 +2,7 @@ import Piece from "../PieceComponent/PieceComponent";
 import AlphabetArray from "../../Utils/AlphabetArray";
 import "./HouseStyles.scss"
 import PieceNames from "../../Utils/PieceNamesArray";
+import PossibleMove from "../PossibleMoveComponent/PossibleMove";
 const House = (props) => {
     class HouseModel {
         Id;
@@ -35,10 +36,11 @@ const House = (props) => {
 
     const getChildId = (singleHouse) =>
     {
-        const pieceId = Object.values(document.getElementById(singleHouse.Id)?.children)?.find(x => x)?.dataset.pieceid || pieceNames.void;
+        const piece = props.AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === singleHouse.Id)).find(x => x) || { Id: "0", Name: "Void"};
         const houseDiv = document.getElementById(singleHouse.Id);
-        return { pieceId, houseDiv}
+        return { piece, houseDiv}
     }
+    
 
     const generateSingleHouse = () =>
     {
@@ -54,16 +56,23 @@ const House = (props) => {
         const isPossibleToMove = !!(props.PossibleMove.find(x => x === singleHouse.Id));
         const cursor = isPossibleToMove ? "pointer" : "unset"
         const selectHouseClass = props.SelectedHouse === singleHouse.Id ? " selectedHouse" : ""
+        const isAnyPieceInThisHouse = props.ableHouses.flatMap(house => props.AllPieces.map(x => x.filter(piece => piece.CurrentHouse === house)).filter(x => x.length).find(x => x));
+        const preyPieceClass = isAnyPieceInThisHouse.filter(x => x?.CurrentHouse === singleHouse.Id).length ? " Prey" : ""
 
         return (
             <div
-                className={"singleHouse " + singleHouse.Color + selectHouseClass}
+                className={"singleHouse " + singleHouse.Color + selectHouseClass + preyPieceClass}
                 data-housecolor={singleHouse.Color}
                 data-ispossibletomove={isPossibleToMove}
                 id = {singleHouse.Id}
                 onClick={() => props.onClick(getChildId(singleHouse))}
                 style={{ cursor: cursor}}
-                >
+            >
+                <PossibleMove
+                    ableHouses={props.ableHouses}
+                    houseId={singleHouse.Id}
+                    AllPieces={props.AllPieces}
+                />
                 <Piece
                     originalHouse = {singleHouse.Id}
                     onClick = {props.onClick}

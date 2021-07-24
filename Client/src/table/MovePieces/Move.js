@@ -1,4 +1,4 @@
-const SingleMove = (pieceObj, piecePosition, color, movedHouses) => {
+const SingleMove = (house, AllPieces, movedHouses) => {
     const colunmAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H"];
     var directionToIgnore = [];
 
@@ -196,22 +196,22 @@ const SingleMove = (pieceObj, piecePosition, color, movedHouses) => {
         return sumResult;
     }
 
-    const firstPieceMove = (movedHouses, pieceObj) => {
-        if (!!movedHouses.find(x => x.pieceId === pieceObj.Id))
+    const firstPieceMove = (movedHouses, piece) => {
+        if (!!movedHouses.find(pieceId => pieceId === piece.Id))
         {
             return false;
         }
         return true;
     }
 
-    const possibleMoves = (pieceObj, actuallyPosition, movedHouses) =>
+    const possibleMoves = (house, movedHouses) =>
     {
         let possibleMoves = [];
         let possibleMovesToEat = [];
-        const firstMove  = firstPieceMove(movedHouses, pieceObj)
-        let pieceMovement = getMove(pieceObj.Name);
-        const Index = getIndex(actuallyPosition);
-        switch (pieceObj.Name) {
+        const firstMove  = firstPieceMove(movedHouses, house.piece)
+        let pieceMovement = getMove(house.piece.Name);
+        const Index = getIndex(house.piece.CurrentHouse);
+        switch (house.piece.Name) {
             case Queen().Name:
                 pieceMovement.map(move => {
                     
@@ -224,7 +224,7 @@ const SingleMove = (pieceObj, piecePosition, color, movedHouses) => {
                     const houseTarget = document.getElementById(sumResult);
                     const movingToEat = !houseTarget.classList.contains("Void");
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = houseTarget.classList[2].startsWith(color);
+                    const isTheSameColor = houseTarget.classList[2].startsWith(house.piece.Color);
                     if(isTheSameColor)
                     {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))
@@ -248,11 +248,10 @@ const SingleMove = (pieceObj, piecePosition, color, movedHouses) => {
 
                     const pieceDirection = move[2];
                     const sumResult = respectLimit(move, Index);
-                    const houseTarget = Object.values(document.getElementById(sumResult)?.children)?.find(x => x);
-                    const houseTargetId = houseTarget?.dataset.pieceid;
-                    const movingToEat = !!houseTargetId;
+                    const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult)).find(x => x);
+                    const movingToEat = !!pieceTarget;
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = houseTarget?.dataset.piececolor === pieceObj.Color
+                    const isTheSameColor = pieceTarget?.Color === house.piece.Color
                     if (isTheSameColor) {
                         return null;
                     }
@@ -262,8 +261,8 @@ const SingleMove = (pieceObj, piecePosition, color, movedHouses) => {
                         return null;
                     };
                     //move forward and only eat on the left/right side
-                    if ((!movingToEat && (pieceDirection !== direction.UpSide && pieceDirection !== direction.UpSideDouble))
-                        || (movingToEat && (pieceDirection === direction.UpSide || pieceDirection === direction.UpSideDouble)))
+                    if ((movingToEat === true && (pieceDirection === direction.UpSide || pieceDirection === direction.UpSideDouble))
+                        || (movingToEat === false && (pieceDirection === direction.UpSideLeft || pieceDirection === direction.UpSideRight)))
                     {
                         return null;
                     };
@@ -282,7 +281,7 @@ const SingleMove = (pieceObj, piecePosition, color, movedHouses) => {
                     const houseTarget = document.getElementById(sumResult);
                     const movingToEat = !houseTarget.classList.contains("Void");
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = houseTarget.classList[2].startsWith(color);
+                    const isTheSameColor = houseTarget.classList[2].startsWith(house.piece.Color);
                     if (isTheSameColor) {
                         return null;
                     }
@@ -301,7 +300,7 @@ const SingleMove = (pieceObj, piecePosition, color, movedHouses) => {
                     const houseTarget = document.getElementById(sumResult);
                     const movingToEat = !houseTarget.classList.contains("Void");
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = houseTarget.classList[2].startsWith(color);
+                    const isTheSameColor = houseTarget.classList[2].startsWith(house.piece.Color);
                     if (isTheSameColor)
                     {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))
@@ -327,7 +326,7 @@ const SingleMove = (pieceObj, piecePosition, color, movedHouses) => {
                     const houseTarget = document.getElementById(sumResult);
                     const movingToEat = !houseTarget.classList.contains("Void");
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = houseTarget.classList[2].startsWith(color);
+                    const isTheSameColor = houseTarget.classList[2].startsWith(house.piece.Color);
                     if (isTheSameColor) {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))
                         return null;
@@ -349,7 +348,7 @@ const SingleMove = (pieceObj, piecePosition, color, movedHouses) => {
                     const houseTarget = document.getElementById(sumResult);
                     const movingToEat = !houseTarget.classList.contains("Void");
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = houseTarget.classList[2].startsWith(color);
+                    const isTheSameColor = houseTarget.classList[2].startsWith(house.piece.Color);
                     if (isTheSameColor)
                     {
                         return null;
@@ -369,7 +368,7 @@ const SingleMove = (pieceObj, piecePosition, color, movedHouses) => {
         }
         return possibleMoves;
     }
-    return possibleMoves(pieceObj, piecePosition, movedHouses);
+    return possibleMoves(house, movedHouses);
 }
 
 export default SingleMove;

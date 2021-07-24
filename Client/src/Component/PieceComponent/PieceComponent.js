@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import './PieceStyles.scss'
-import PieceModel from "../PieceModel/PieceModel";
 import PieceNames from "../../Utils/PieceNamesArray";
 const Piece = (props) => {
     const pieceNames = PieceNames;
@@ -10,17 +9,9 @@ const Piece = (props) => {
     useEffect(() => {
         const houseIndex = props.originalHouse;
         let piece;
-        piece = props.AllPieces?.WhitePieces().flatMap(whitePieces =>
-            whitePieces.filter(pieces =>
-                pieces)).find(finalPiece =>
-                    finalPiece.CurrentHouse === houseIndex);
-
-        if (!piece) {
-            piece = props.AllPieces?.BlackPieces().flatMap(blackPieces =>
-                blackPieces.filter(pieces =>
-                    pieces)).find(finalPiece =>
-                        finalPiece.CurrentHouse === houseIndex);
-        }
+        piece = props.AllPieces?.map(pieces =>
+                    pieces.find(finalPiece =>
+                        finalPiece.CurrentHouse === houseIndex)).find(x => x);
 
         setCurrentPiece(piece);
     }, [props.AllPieces])
@@ -32,10 +23,7 @@ const Piece = (props) => {
         )
     }
     const component = () => {
-        return possibleMove ?
-            <div className={"possibleMove"}/>
-            :
-            !!CurrentPiece && <div
+        return !!CurrentPiece && CurrentPiece?.Ativo && <div
                 data-pieceid={CurrentPiece.Id}
                 data-piececolor={CurrentPiece.Name === pieceNames.void ? "" : CurrentPiece.Color}
                 className={(CurrentPiece === pieceNames.void ? pieceNames.void : CurrentPiece.Name) + " " + getImageClassName()}

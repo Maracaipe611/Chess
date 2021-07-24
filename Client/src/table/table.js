@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './tableStyles.scss';
 import WsRequest from './Requests/requests';
-import SingleMove, {} from './MovePieces/Move'
-import Piece from '../Component/PieceComponent/PieceComponent';
 import PieceModel from '../Component/PieceModel/PieceModel';
 import House from '../Component/HouseComponent/HouseComponent';
 import TableInteractions from './TableInteractions';
@@ -10,20 +8,19 @@ import piecesNames from '../Utils/PieceNamesArray';
 
 function Table() {
     const [selectedHouse, setSelectedHouse] = useState("");
-    const [selectedPiece, setSelectedPiece] = useState("");
-    const [movedHouses, setMovedHouses] = useState([{}]);
+    const [selectedPiece, setSelectedPiece] = useState({});
+    const [movedHouses, setMovedHouses] = useState([]);
     const [possibleMove, setPossibleMove] = useState([]);
     const [AllPieces, setAllPieces] = useState();
     const [FinalChessBoard, setFinalChessBoard] = useState();
     const colunmLimit = [8, 7, 6, 5, 4, 3, 2, 1];
 
     useEffect(() => {
-        setAllPieces(PieceModel());
+        setAllPieces(PieceModel().AllPieces);
     }, [])
 
-
-    
     useEffect(() => {
+
         const renderColunm = (letter) => {
             return (
                 colunmLimit.map((i) => {
@@ -34,10 +31,11 @@ function Table() {
                         PossibleMove={possibleMove}
                         SelectedHouse={selectedHouse}
                         AllPieces={AllPieces}
+                        ableHouses = {possibleMove}
                     />
                 }
                 )
-            )
+            );
         };
 
         const finalTable = colunmLimit.map((number, i) => {
@@ -46,25 +44,43 @@ function Table() {
                     {renderColunm(i, number)}
                 </div>)
         });
-       
-        setFinalChessBoard(finalTable)
-    }, [AllPieces, selectedPiece, possibleMove, selectedHouse])
 
-    const movePiece = (piece) => {
-        const { SelectHouse, PossiblePositions } = TableInteractions();
-        if (piece.pieceId === selectedPiece)
-            return null
-        SelectHouse(piece);
-        setSelectedHouse(piece.houseDiv.id)
-        const houseHasPiece = !(piece.pieceId === piecesNames.void)
-        const selectingToMove = !houseHasPiece && Object.values(piece.houseDiv.children).find(x => x).classList.contains("possibleMove");
+        setFinalChessBoard(finalTable);
+    }, [AllPieces, selectedPiece, possibleMove, selectedHouse, movedHouses]);
 
-        if (houseHasPiece && piece.pieceId !== selectedPiece) {
-            const ableHouses = PossiblePositions(piece, movedHouses);
-            setPossibleMove(ableHouses)
-            setSelectedPiece(piece.pieceId)
-        } else if (selectingToMove) {
-            console.log("Usuário clicou para mover a peça")
+    useEffect(() => {
+        setPossibleMove([])
+        setSelectedHouse("")
+        setSelectedPiece({})
+    }, [AllPieces])
+
+    const movePiece = (house) => {
+        if (house.piece.Id === selectedPiece.Id) return null;
+
+        const { SelectHouse, PossiblePositions, MovePiece } = TableInteractions(AllPieces);
+        const houseHasPiece = !(house.piece.Name === piecesNames.void)
+        const selectingToMove = !houseHasPiece && Object.values(house.houseDiv.children).find(x => x)?.classList.contains("possibleMove");
+        const userIsSelectingSameHouse = houseHasPiece && house.piece.Id === selectedPiece.Id;
+        const movingToEat = houseHasPiece && selectedPiece?.Color !== house.piece.Color && !!selectedPiece && !!selectedPiece.Color;
+        SelectHouse(house.piece.Id);
+        setSelectedHouse(house.houseDiv.id);
+        
+        if (!userIsSelectingSameHouse && !selectingToMove && !movingToEat && houseHasPiece)
+        {
+            const ableHouses = PossiblePositions(house, movedHouses);
+
+            setPossibleMove(ableHouses);
+            setSelectedPiece(house.piece);
+
+        } else if (selectingToMove || movingToEat)
+        {
+            setMovedHouses([...movedHouses, selectedPiece.Id]);
+            const newAllPieces = MovePiece(selectedPiece.Id, house.houseDiv.id, AllPieces, movingToEat)
+            setAllPieces(newAllPieces);
+        }else
+        {
+            setPossibleMove([]);
+            setSelectedPiece({});
         }
     }
 
