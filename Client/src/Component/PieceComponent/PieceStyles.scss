@@ -12,53 +12,8 @@ $WhiteBishop: url('../../table/ChessPieces/ChessWhiteBishop.png');
 $WhiteQueen: url('../../table/ChessPieces/ChessWhiteQueen.png');
 $WhiteKing: url('../../table/ChessPieces/ChessWhiteKing.png');
 
-$BlackWoodenBackground: url('../../table/ChessPieces/woodenHouse.jpg');
-$LightWoodenBackground: url('../../table/ChessPieces/lightWoodenHouse.jpg');
-
-.singleHouse {
-    width: 61px;
-    height: 61px;
-    cursor: unset;
-    margin: 0.01px 0 0.01px 0;
-}
-
-.WhiteHouse {
-    background-image: $LightWoodenBackground;
-    color: black;
-}
-
-.BlackHouse {
-    background-image: $BlackWoodenBackground;
-    color: white;
-}
-
 .Void {
     cursor: unset;
-}
-
-.possibleMove {
-    width: 30px;
-    height: 30px;
-    background-color: #887d4973;
-    border-radius: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 15.77px;
-    margin-bottom: 15.77px;
-    cursor: pointer;
-}
-
-.selectedHouse {
-    width: 61px;
-    height: 61px;
-    background-image: none;
-    background-color: yellow;
-    cursor: pointer;
-}
-
-.Prey {
-    background-image: none !important;
-    background-color: rgba(249, 83, 3, 1);
 }
 
 .BlackPawn {

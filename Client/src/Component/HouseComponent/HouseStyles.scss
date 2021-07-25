@@ -1,0 +1,34 @@
+
+$BlackWoodenBackground: url('../../table/ChessPieces/woodenHouse.jpg');
+$LightWoodenBackground: url('../../table/ChessPieces/lightWoodenHouse.jpg');
+
+.Prey>div[data-pieceid] {
+    box-shadow: inset 0 0 20px 3px red;
+}
+
+.White {
+    background-image: $LightWoodenBackground;
+    color: black;
+}
+
+.Black {
+    background-image: $BlackWoodenBackground;
+    color: white;
+}
+
+.singleHouse {
+    width: 61px;
+    height: 61px;
+    cursor: unset;
+    margin: 0.01px 0 0.01px 0;
+    display: inline-flex;
+}
+
+
+.selectedHouse {
+    width: 61px;
+    height: 61px;
+    background-image: none !important;
+    background-color: yellow;
+    cursor: pointer;
+}
