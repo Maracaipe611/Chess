@@ -221,7 +221,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
 
                     const pieceDirection = move[2];
                     const sumResult = respectLimit(move, Index);
-                    const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult)).find(x => x);
+                    const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
                     const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
                     const isTheSameColor = pieceTarget?.Color === house.piece.Color
@@ -242,7 +242,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                 break;
             case Pawn().Name:
                 pieceMovement.map(move => {
-                    if (!respectLimit(move, Index)){
+                    if (!respectLimit(move, Index, directionToIgnore)){
                         return null;
                     };
 
@@ -278,10 +278,9 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     };
 
                     const sumResult = respectLimit(move, Index);
-                    const houseTarget = document.getElementById(sumResult);
-                    const movingToEat = !houseTarget.classList.contains("Void");
+                    const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = houseTarget.classList[2].startsWith(house.piece.Color);
+                    const isTheSameColor = pieceTarget?.Color === house.piece.Color;
                     if (isTheSameColor) {
                         return null;
                     }
@@ -291,16 +290,16 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                 break;
             case Bishop().Name:
                 pieceMovement.map(move => {
-                    if (!respectLimit(move, Index)) {
+                    if (!respectLimit(move, Index, directionToIgnore)) {
                         return null;
                     };
 
                     const pieceDirection = move[2];
                     const sumResult = respectLimit(move, Index);
-                    const houseTarget = document.getElementById(sumResult);
-                    const movingToEat = !houseTarget.classList.contains("Void");
+                    const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
+                    const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = houseTarget.classList[2].startsWith(house.piece.Color);
+                    const isTheSameColor = pieceTarget?.Color === house.piece.Color
                     if (isTheSameColor)
                     {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))
@@ -317,22 +316,23 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                 break;
             case Tower().Name:
                 pieceMovement.map(move => {
-                    if (!respectLimit(move, Index)) {
+                    if (!respectLimit(move, Index, directionToIgnore)) {
                         return null;
                     };
 
                     const pieceDirection = move[2];
                     const sumResult = respectLimit(move, Index);
-                    const houseTarget = document.getElementById(sumResult);
-                    const movingToEat = !houseTarget.classList.contains("Void");
+                    const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
+                    const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = houseTarget.classList[2].startsWith(house.piece.Color);
+                    const isTheSameColor = pieceTarget?.Color === house.piece.Color
                     if (isTheSameColor) {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))
                         return null;
                     }
 
                     if (movingToEat) {
+                        directionToIgnore = (directionToIgnore.concat(pieceDirection))
                         possibleMovesToEat.push(moveIndex);
                     }
                     possibleMoves.push(moveIndex);
@@ -340,15 +340,15 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                 break;
             case King().Name:
                 pieceMovement.map(move => {
-                    if (!respectLimit(move, Index)) {
+                    if (!respectLimit(move, Index, directionToIgnore)) {
                         return null;
                     };
 
                     const sumResult = respectLimit(move, Index);
-                    const houseTarget = document.getElementById(sumResult);
-                    const movingToEat = !houseTarget.classList.contains("Void");
+                    const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
+                    const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = houseTarget.classList[2].startsWith(house.piece.Color);
+                    const isTheSameColor = pieceTarget?.Color === house.piece.Color
                     if (isTheSameColor)
                     {
                         return null;
