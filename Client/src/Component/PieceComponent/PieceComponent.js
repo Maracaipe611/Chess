@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import './PieceStyles.scss'
 import PieceNames from "../../Utils/PieceNamesArray";
+import ModalPawnOptions from "../OptionsToPawnTransform/OptionsToPawnTransform";
 const Piece = (props) => {
     const pieceNames = PieceNames;
-    const possibleMove = !!(props.PossibleMove.find(x => x === props.originalHouse));
     const [CurrentPiece, setCurrentPiece] = useState();
 
     useEffect(() => {
@@ -22,12 +22,15 @@ const Piece = (props) => {
             CurrentPiece.Color + CurrentPiece.Name
         )
     }
+
     const component = () => {
-        return !!CurrentPiece && CurrentPiece?.Ativo && <div
+        return (!!CurrentPiece && CurrentPiece?.Ativo &&
+            <div
                 data-pieceid={CurrentPiece.Id}
                 data-piececolor={CurrentPiece.Name === pieceNames.void ? "" : CurrentPiece.Color}
                 className={(CurrentPiece === pieceNames.void ? pieceNames.void : CurrentPiece.Name) + " " + getImageClassName()}
             />
+            )
     }
     return component();
 }

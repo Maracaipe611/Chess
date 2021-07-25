@@ -1,0 +1,56 @@
+$BlackTower: url('../../table/ChessPieces/ChessBlackTower.png');
+$BlackHorse: url('../../table/ChessPieces/ChessBlackHorse.png');
+$BlackBishop: url('../../table/ChessPieces/ChessBlackBishop.png');
+$BlackQueen: url('../../table/ChessPieces/ChessBlackQueen.png');
+
+$WhiteTower: url('../../table/ChessPieces/ChessWhiteTower.png');
+$WhiteHorse: url('../../table/ChessPieces/ChessWhiteHorse.png');
+$WhiteBishop: url('../../table/ChessPieces/ChessWhiteBishop.png');
+$WhiteQueen: url('../../table/ChessPieces/ChessWhiteQueen.png');
+
+.Modal {
+    width: 260px;
+    height: 80px;
+    position: absolute;
+    margin-top: 50px;
+    margin-left: 50px;
+    background-color: white;
+}
+
+Button {
+    margin: 5px 2px 5px 2px;
+    width: 60px;
+    height: 60px;
+}
+
+.WhiteQueen{
+    background-image: $WhiteQueen;
+}
+
+.WhiteBishop{
+    background-image: $WhiteBishop;
+}
+
+.WhiteHorse{
+    background-image: $WhiteHorse;
+}
+
+.WhiteTower{
+background-image: $WhiteTower;
+}
+
+.BlackQueen{
+    background-image: $BlackQueen;
+}
+
+.BlackBishop{
+    background-image: $BlackBishop;
+}
+
+.BlackHorse{
+    background-image: $BlackHorse;
+}
+
+.BlackTower{
+    background-image: $BlackTower;
+}

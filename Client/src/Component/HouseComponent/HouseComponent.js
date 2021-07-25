@@ -3,6 +3,7 @@ import AlphabetArray from "../../Utils/AlphabetArray";
 import "./HouseStyles.scss"
 import PieceNames from "../../Utils/PieceNamesArray";
 import PossibleMove from "../PossibleMoveComponent/PossibleMove";
+import ModalPawnOptions from "../OptionsToPawnTransform/OptionsToPawnTransform";
 const House = (props) => {
     class HouseModel {
         Id;
@@ -17,8 +18,6 @@ const House = (props) => {
         White: "White"
     };
 
-
-    const alphabetArray = AlphabetArray();
     const pieceNames = PieceNames;
 
     const getHouseColor = () =>
@@ -45,7 +44,7 @@ const House = (props) => {
     const generateSingleHouse = () =>
     {
         const singleHouse = new HouseModel();
-        const AlphabetColunm = alphabetArray[props.AlphabetIndex]
+        const AlphabetColunm = AlphabetArray.Normal[props.AlphabetIndex]
 
         singleHouse.Color = getHouseColor();
         singleHouse.AlphabetIndex = props.AlphabetIndex;
@@ -68,6 +67,11 @@ const House = (props) => {
                 onClick={() => props.onClick(getChildId(singleHouse))}
                 style={{ cursor: cursor}}
             >
+                <ModalPawnOptions
+                    AllPieces={props.AllPieces}
+                    houseId={singleHouse.Id}
+                    setAllPieces={props.setAllPieces}
+                />
                 <PossibleMove
                     ableHouses={props.ableHouses}
                     houseId={singleHouse.Id}

@@ -31,6 +31,7 @@ function Table() {
                         PossibleMove={possibleMove}
                         SelectedHouse={selectedHouse}
                         AllPieces={AllPieces}
+                        setAllPieces={setAllPieces}
                         ableHouses = {possibleMove}
                     />
                 }
@@ -61,7 +62,7 @@ function Table() {
         const houseHasPiece = !(house.piece.Name === piecesNames.void)
         const selectingToMove = !houseHasPiece && Object.values(house.houseDiv.children).find(x => x)?.classList.contains("possibleMove");
         const userIsSelectingSameHouse = houseHasPiece && house.piece.Id === selectedPiece.Id;
-        const movingToEat = houseHasPiece && selectedPiece?.Color !== house.piece.Color && !!selectedPiece && !!selectedPiece.Color;
+        const movingToEat = houseHasPiece && selectedPiece?.Color !== house.piece.Color && !!selectedPiece && !!selectedPiece.Color && possibleMove.includes(house.piece.CurrentHouse);
         SelectHouse(house.piece.Id);
         setSelectedHouse(house.houseDiv.id);
         
@@ -82,7 +83,7 @@ function Table() {
             setPossibleMove([]);
             setSelectedPiece({});
         }
-    }
+    };
 
     return (
         <div className={"TableComplete"}>

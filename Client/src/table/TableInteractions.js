@@ -1,9 +1,8 @@
-import PieceModel from "../Component/PieceModel/PieceModel";
+import AlphabetArray from "../Utils/AlphabetArray";
+import Color from "../Utils/Colors";
 import SingleMove from "./MovePieces/Move";
 const TableInteractions = (AllPieces) =>
 {
-    const whitePieces = AllPieces.flatMap(x => x.filter(p => p.Color === "White"));
-    const blackPieces = AllPieces.flatMap(x => x.filter(p => p.Color === "Black"));
     const classNames = {
         SelectedHouse: "selectedHouse",
         PossibleMove: "possibleMove"
@@ -44,12 +43,34 @@ const TableInteractions = (AllPieces) =>
             }
             return y
         }));
+        AllPieces = AnyPawnIsAbleToChange()
         removeOthersClass(classNames.PossibleMove);
         removeOthersClass(classNames.SelectedHouse);
         return AllPieces;
     }
 
-    return { SelectHouse, PossiblePositions, MovePiece}
+    const AnyPawnIsAbleToChange = () => {
+        AllPieces = AllPieces.map(x => x.filter(y => {
+            if ((AlphabetArray.WhitesPiecesCanChangeOn.includes(y.CurrentHouse) && y.Color === Color.White)
+                || (AlphabetArray.BlackPiecesCanChangeOn.includes(y.CurrentHouse) && y.Color === Color.Black)) {
+                y.AbleToChange = true;
+            };
+            return y
+        }));
+        return AllPieces
+    };
+
+    const ChangePawn = (pawn, wantPiece) => {
+        AllPieces = AllPieces.map(x => x.filter(y => {
+            if (y.Id === pawn.Id) {
+                y.Name = wantPiece;
+            };
+            return y
+        }));
+        return AllPieces;
+    }
+
+    return { SelectHouse, PossiblePositions, MovePiece, ChangePawn}
 }
 
 export default TableInteractions;
