@@ -1,5 +1,6 @@
 import AlphabetArray from "../Utils/AlphabetArray";
 import Color from "../Utils/Colors";
+import PieceNames from "../Utils/PieceNamesArray";
 import SingleMove from "./MovePieces/Move";
 const TableInteractions = (AllPieces) =>
 {
@@ -51,8 +52,8 @@ const TableInteractions = (AllPieces) =>
 
     const AnyPawnIsAbleToChange = () => {
         AllPieces = AllPieces.map(x => x.filter(y => {
-            if ((AlphabetArray.WhitesPiecesCanChangeOn.includes(y.CurrentHouse) && y.Color === Color.White)
-                || (AlphabetArray.BlackPiecesCanChangeOn.includes(y.CurrentHouse) && y.Color === Color.Black)) {
+            if (((AlphabetArray.WhitesPiecesCanChangeOn.includes(y.CurrentHouse) && y.Color === Color.White)
+                || (AlphabetArray.BlackPiecesCanChangeOn.includes(y.CurrentHouse) && y.Color === Color.Black)) && y.Name === PieceNames.pawn) {
                 y.AbleToChange = true;
             };
             return y
@@ -64,6 +65,7 @@ const TableInteractions = (AllPieces) =>
         AllPieces = AllPieces.map(x => x.filter(y => {
             if (y.Id === pawn.Id) {
                 y.Name = wantPiece;
+                y.AbleToChange = false;
             };
             return y
         }));

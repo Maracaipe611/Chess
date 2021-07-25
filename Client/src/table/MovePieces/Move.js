@@ -1,6 +1,5 @@
 const SingleMove = (house, AllPieces, movedHouses) => {
     const colunmAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H"];
-    var directionToIgnore = [];
 
     class pieceModel {
         Name = "Void";
@@ -182,7 +181,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
     return Moves;
     }
 
-    const respectLimit = (move, Index) => {
+    const respectLimit = (move, Index, directionToIgnore) => {
         const moveLetterIndex = move[0]; //5
         const moveIndex = move[1]; //0
         const direction = move[2] //upside
@@ -190,7 +189,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
         const indexSum = Index.NumberIndex + moveIndex;
         const sumResult =  colunmAlphabet[(letterSum - 1)] + indexSum;
 
-        if (letterSum > 8 || letterSum < 1 || indexSum > 8 || indexSum < 1 || directionToIgnore.includes(direction)) //nao pode passar do limite
+        if (letterSum > 8 || letterSum < 1 || indexSum > 8 || indexSum < 1 || directionToIgnore?.includes(direction)) //nao pode passar do limite
             return false;
         
         return sumResult;
@@ -208,6 +207,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
     {
         let possibleMoves = [];
         let possibleMovesToEat = [];
+        let directionToIgnore = [];
         const firstMove  = firstPieceMove(movedHouses, house.piece)
         let pieceMovement = getMove(house.piece.Name);
         const Index = getIndex(house.piece.CurrentHouse);
@@ -215,16 +215,16 @@ const SingleMove = (house, AllPieces, movedHouses) => {
             case Queen().Name:
                 pieceMovement.map(move => {
                     
-                    if (!respectLimit(move, Index)) {
+                    if (!respectLimit(move, Index, directionToIgnore)) {
                         return null;
                     };
 
                     const pieceDirection = move[2];
                     const sumResult = respectLimit(move, Index);
-                    const houseTarget = document.getElementById(sumResult);
-                    const movingToEat = !houseTarget.classList.contains("Void");
+                    const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult)).find(x => x);
+                    const movingToEat = !!pieceTarget;
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = houseTarget.classList[2].startsWith(house.piece.Color);
+                    const isTheSameColor = pieceTarget?.Color === house.piece.Color
                     if(isTheSameColor)
                     {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))

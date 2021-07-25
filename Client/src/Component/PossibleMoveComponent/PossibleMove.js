@@ -8,11 +8,11 @@ const PossibleMove = (props) =>
 
     const HouseIsPossibleToMove = () =>
     {
-        const isAbleToMove = ableHousesToMove.map(house => house === houseId).find(x => x);
-        const isAnyPieceInThisHouse = !!props.ableHouses.flatMap(house => props.AllPieces.map(pieces => pieces.find(p => p.CurrentHouse === house))).find(x => x);
+        const isAbleToMove = ableHousesToMove.map(house => house === houseId).find(x => x);/* 
+        const isAnyPieceInThisHouse = !!props.ableHouses.flatMap(house => props.AllPieces.map(pieces => pieces.find(p => p.CurrentHouse === house))).find(x => x); */
         if (!!isAbleToMove)
         {
-            return (<div className={"possibleMove"} style={{ display: isAnyPieceInThisHouse ? "none" : "block"}}/>)
+            return (<div className={"possibleMove"} /* style={{ display: isAnyPieceInThisHouse ? "none" : "block"}} *//>)
         }
         
         return null
