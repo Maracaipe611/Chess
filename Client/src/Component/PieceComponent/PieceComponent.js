@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
 import './PieceStyles.scss'
 import PieceNames from "../../Utils/PieceNamesArray";
-import ModalPawnOptions from "../OptionsToPawnTransform/OptionsToPawnTransform";
-const Piece = (props) => {
+import { useAllPieces } from "../../Providers/AllPieces";
+
+const Piece = ({ originalHouse }) => {
     const pieceNames = PieceNames;
     const [CurrentPiece, setCurrentPiece] = useState();
+    const { AllPieces } = useAllPieces()
 
     useEffect(() => {
-        const houseIndex = props.originalHouse;
         let piece;
-        piece = props.AllPieces?.map(pieces =>
+        piece = AllPieces.map(pieces =>
                     pieces.find(finalPiece =>
-                        finalPiece.CurrentHouse === houseIndex)).find(x => x);
+                        finalPiece.CurrentHouse === originalHouse)).find(x => x);
 
         setCurrentPiece(piece);
-    }, [props.AllPieces])
+    }, [AllPieces, originalHouse])
 
     const getImageClassName = () => {
         if (CurrentPiece.Name === pieceNames.void) return null;
@@ -29,6 +30,7 @@ const Piece = (props) => {
                 data-pieceid={CurrentPiece.Id}
                 data-piececolor={CurrentPiece.Name === pieceNames.void ? "" : CurrentPiece.Color}
                 className={(CurrentPiece === pieceNames.void ? pieceNames.void : CurrentPiece.Name) + " " + getImageClassName()}
+                key = {CurrentPiece.Id}
             />
             )
     }

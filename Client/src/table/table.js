@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import './tableStyles.scss';
 import WsRequest from './Requests/requests';
-import PieceModel from '../Component/PieceModel/PieceModel';
 import House from '../Component/HouseComponent/HouseComponent';
 import TableInteractions from './TableInteractions';
 import piecesNames from '../Utils/PieceNamesArray';
+import { useAllPieces } from "../Providers/AllPieces"
 
 function Table() {
     const [selectedHouse, setSelectedHouse] = useState("");
     const [selectedPiece, setSelectedPiece] = useState({});
     const [movedHouses, setMovedHouses] = useState([]);
     const [possibleMove, setPossibleMove] = useState([]);
-    const [AllPieces, setAllPieces] = useState();
+    const { AllPieces, setAllPieces } = useAllPieces()
     const [FinalChessBoard, setFinalChessBoard] = useState();
     const colunmLimit = [8, 7, 6, 5, 4, 3, 2, 1];
 
     useEffect(() => {
-        setAllPieces(PieceModel().AllPieces);
-    }, [])
-
-    useEffect(() => {
-
         const renderColunm = (letter) => {
             return (
                 colunmLimit.map((i) => {
@@ -30,9 +25,8 @@ function Table() {
                         onClick={movePiece}
                         PossibleMove={possibleMove}
                         SelectedHouse={selectedHouse}
-                        AllPieces={AllPieces}
-                        setAllPieces={setAllPieces}
                         ableHouses = {possibleMove}
+                        key = {letter + i}
                     />
                 }
                 )
@@ -41,12 +35,14 @@ function Table() {
 
         const finalTable = colunmLimit.map((number, i) => {
             return (
-                <div className={"mergedHouses"}>
+                <div className={"mergedHouses"}
+                key = {i}>
                     {renderColunm(i, number)}
                 </div>)
         });
 
         setFinalChessBoard(finalTable);
+        // eslint-disable-next-line
     }, [AllPieces, selectedPiece, possibleMove, selectedHouse, movedHouses]);
 
     useEffect(() => {
@@ -76,7 +72,7 @@ function Table() {
         } else if (selectingToMove || movingToEat)
         {
             setMovedHouses([...movedHouses, selectedPiece.Id]);
-            const newAllPieces = MovePiece(selectedPiece.Id, house.houseDiv.id, AllPieces, movingToEat)
+            const newAllPieces = MovePiece(selectedPiece.Id, house.houseDiv.id, movingToEat)
             setAllPieces(newAllPieces);
         }else
         {

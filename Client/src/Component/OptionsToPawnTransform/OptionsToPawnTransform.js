@@ -2,24 +2,23 @@ import React, { useState, useEffect } from "react";
 import TableInteractions from "../../table/TableInteractions";
 import PieceNames from "../../Utils/PieceNamesArray";
 import "./OptionsToPawnTransformStyles.scss";
+import { useAllPieces } from "../../Providers/AllPieces";
 
 const ModalPawnOptions = ({
-    houseId,
-    AllPieces,
-    setAllPieces
+    houseId
 }) =>
 {
+    const {AllPieces, setAllPieces} = useAllPieces()
     const [CurrentPiece, setCurrentPiece] = useState();
 
     useEffect(() => {
-        const houseIndex = houseId;
-        const piece = AllPieces?.map(pieces =>
+        const piece = AllPieces.map(pieces =>
             pieces.find(finalPiece => {
-                return finalPiece.AbleToChange === true && finalPiece.CurrentHouse === houseIndex ? finalPiece : null
+                return finalPiece.AbleToChange === true && finalPiece.CurrentHouse === houseId ? finalPiece : null
             })).find(x => x);
 
         setCurrentPiece(piece);
-    }, [AllPieces])
+    }, [AllPieces, houseId])
 
     const getPiece = (piece) =>
     {
@@ -40,6 +39,7 @@ const ModalPawnOptions = ({
             return (<button
             className={CurrentPiece?.Color + piece}
             onClick={() => getPiece(piece)}
+            key={CurrentPiece?.Color + piece}
             />)
         })
 

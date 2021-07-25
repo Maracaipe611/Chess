@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 const WsRequest = () => {

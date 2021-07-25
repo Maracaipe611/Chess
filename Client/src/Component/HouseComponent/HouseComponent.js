@@ -1,10 +1,12 @@
 import Piece from "../PieceComponent/PieceComponent";
 import AlphabetArray from "../../Utils/AlphabetArray";
 import "./HouseStyles.scss"
-import PieceNames from "../../Utils/PieceNamesArray";
 import PossibleMove from "../PossibleMoveComponent/PossibleMove";
 import ModalPawnOptions from "../OptionsToPawnTransform/OptionsToPawnTransform";
+import { useAllPieces } from "../../Providers/AllPieces";
+
 const House = (props) => {
+    const { AllPieces } = useAllPieces()
     class HouseModel {
         Id;
         Color;
@@ -17,8 +19,6 @@ const House = (props) => {
         Black: "Black",
         White: "White"
     };
-
-    const pieceNames = PieceNames;
 
     const getHouseColor = () =>
     {
@@ -35,7 +35,7 @@ const House = (props) => {
 
     const getChildId = (singleHouse) =>
     {
-        const piece = props.AllPieces.map(pieces => pieces.find(piece =>
+        const piece = AllPieces.map(pieces => pieces.find(piece =>
             piece.CurrentHouse === singleHouse.Id && piece.Ativo
             )).find(x => x) ||
         {
@@ -62,7 +62,7 @@ const House = (props) => {
         const isPossibleToMove = !!(props.PossibleMove.find(x => x === singleHouse.Id));
         const cursor = isPossibleToMove ? "pointer" : "unset"
         const selectHouseClass = props.SelectedHouse === singleHouse.Id ? " selectedHouse" : ""
-        const isAnyPieceInThisHouse = props.ableHouses.flatMap(house => props.AllPieces.map(x => x.filter(piece => piece.CurrentHouse === house)).filter(x => x.length).find(x => x));
+        const isAnyPieceInThisHouse = props.ableHouses.flatMap(house => AllPieces.map(x => x.filter(piece => piece.CurrentHouse === house)).filter(x => x.length).find(x => x));
         const preyPieceClass = isAnyPieceInThisHouse.filter(x => x?.CurrentHouse === singleHouse.Id).length ? " Prey" : ""
 
         return (
@@ -73,22 +73,19 @@ const House = (props) => {
                 id = {singleHouse.Id}
                 onClick={() => props.onClick(getChildId(singleHouse))}
                 style={{ cursor: cursor}}
+                key= {singleHouse.Id}
             >
                 <ModalPawnOptions
-                    AllPieces={props.AllPieces}
                     houseId={singleHouse.Id}
-                    setAllPieces={props.setAllPieces}
                 />
                 <PossibleMove
                     ableHouses={props.ableHouses}
                     houseId={singleHouse.Id}
-                    AllPieces={props.AllPieces}
                 />
                 <Piece
                     originalHouse = {singleHouse.Id}
                     onClick = {props.onClick}
                     PossibleMove = {props.PossibleMove}
-                    AllPieces = {props.AllPieces}
                 />
             </div>
         )

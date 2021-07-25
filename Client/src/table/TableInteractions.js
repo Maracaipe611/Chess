@@ -22,11 +22,6 @@ const TableInteractions = (AllPieces) =>
         }
     };
 
-    const changeClass = (div, classToAdd) =>
-    {
-        div.classList.add(classToAdd);
-    };
-
     const PossiblePositions = (piece, movedHouses) => {
         const futuresPositions = SingleMove(piece, AllPieces, movedHouses);
 
@@ -34,7 +29,7 @@ const TableInteractions = (AllPieces) =>
         return futuresPositions;
     };
 
-    const MovePiece = (pieceId, houseToMove, AllPieces, isEated) => {
+    const MovePiece = (pieceId, houseToMove, isEated) => {
         AllPieces = AllPieces.map(x => x.filter(y => {
             if (y.Id === pieceId) {
                 y.CurrentHouse = houseToMove;

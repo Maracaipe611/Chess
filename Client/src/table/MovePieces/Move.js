@@ -238,6 +238,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     }
 
                     possibleMoves.push(moveIndex);
+                    return move;
                 });
                 break;
             case Pawn().Name:
@@ -268,7 +269,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     };
 
                     possibleMoves.push(moveIndex);
-
+                    return move;
                 });
                 break;
             case Horse().Name:
@@ -286,6 +287,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     }
 
                     possibleMoves.push(moveIndex);
+                    return move;
                 });
                 break;
             case Bishop().Name:
@@ -312,6 +314,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                         possibleMovesToEat.push(moveIndex);
                     }
                     possibleMoves.push(moveIndex);
+                    return move;
                 });
                 break;
             case Tower().Name:
@@ -336,6 +339,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                         possibleMovesToEat.push(moveIndex);
                     }
                     possibleMoves.push(moveIndex);
+                    return move;
                 });
                 break;
             case King().Name:
@@ -359,6 +363,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                         possibleMovesToEat.push(moveIndex);
                     }
                     possibleMoves.push(moveIndex);
+                    return move;
                 });
                 break;
             default:

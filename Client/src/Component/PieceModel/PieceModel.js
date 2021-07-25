@@ -130,7 +130,7 @@ const PieceModel = () => {
         })
     ]
 
-    return { AllPieces, PieceNames }
+    return AllPieces
 };
 
 export default PieceModel;
