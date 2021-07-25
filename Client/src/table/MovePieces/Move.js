@@ -222,7 +222,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     const pieceDirection = move[2];
                     const sumResult = respectLimit(move, Index);
                     const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult)).find(x => x);
-                    const movingToEat = !!pieceTarget;
+                    const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
                     const isTheSameColor = pieceTarget?.Color === house.piece.Color
                     if(isTheSameColor)
@@ -249,7 +249,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     const pieceDirection = move[2];
                     const sumResult = respectLimit(move, Index);
                     const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult)).find(x => x);
-                    const movingToEat = !!pieceTarget;
+                    const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
                     const isTheSameColor = pieceTarget?.Color === house.piece.Color
                     if (isTheSameColor) {
