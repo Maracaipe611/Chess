@@ -59,7 +59,7 @@ function Table() {
         if (house.piece.Id === selectedPiece.Id) return null;
 
         const { SelectHouse, PossiblePositions, MovePiece } = TableInteractions(AllPieces);
-        const houseHasPiece = !(house.piece.Name === piecesNames.void)
+        const houseHasPiece = !(house.piece.Name === piecesNames.void && house.piece.Ativo)
         const selectingToMove = !houseHasPiece && Object.values(house.houseDiv.children).find(x => x)?.classList.contains("possibleMove");
         const userIsSelectingSameHouse = houseHasPiece && house.piece.Id === selectedPiece.Id;
         const movingToEat = houseHasPiece && selectedPiece?.Color !== house.piece.Color && !!selectedPiece && !!selectedPiece.Color && possibleMove.includes(house.piece.CurrentHouse);
