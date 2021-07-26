@@ -2,7 +2,7 @@ import AlphabetArray from "../Utils/AlphabetArray";
 import Color from "../Utils/Colors";
 import PieceNames from "../Utils/PieceNamesArray";
 import SingleMove from "./MovePieces/Move";
-const TableInteractions = (AllPieces) =>
+const TableInteractions = (AllPieces, movedHouses) =>
 {
     const classNames = {
         SelectedHouse: "selectedHouse",
@@ -22,7 +22,7 @@ const TableInteractions = (AllPieces) =>
         }
     };
 
-    const PossiblePositions = (piece, movedHouses) => {
+    const PossiblePositions = (piece) => {
         const futuresPositions = SingleMove(piece, AllPieces, movedHouses);
         return futuresPositions;
     };
@@ -65,7 +65,19 @@ const TableInteractions = (AllPieces) =>
         return AllPieces;
     }
 
-    return { UnselectHouse, PossiblePositions, MovePiece, ChangePawn}
+    const getDangerousHouses = (UserColor) =>
+    {
+        const allyKing = AllPieces.map(pieces =>
+            pieces.find(piece =>
+                piece.Name === PieceNames.king && piece.Ativo && piece.Color === UserColor)).find(x => x);
+
+        const enemyPiecesActives = AllPieces.filter(pieces =>
+            pieces.find(piece =>
+                piece.Ativo === true && piece.Color !== allyKing.Color)).flatMap(x => x)
+        console.log(enemyPiecesActives);
+    }
+
+    return { UnselectHouse, PossiblePositions, MovePiece, ChangePawn, getDangerousHouses}
 }
 
 export default TableInteractions;

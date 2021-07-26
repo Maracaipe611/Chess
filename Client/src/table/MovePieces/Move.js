@@ -1,4 +1,4 @@
-const SingleMove = (house, AllPieces, movedHouses) => {
+const SingleMove = (actuallyPiece, AllPieces, movedHouses) => {
     const colunmAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
     class pieceModel {
@@ -203,15 +203,15 @@ const SingleMove = (house, AllPieces, movedHouses) => {
         return true;
     }
 
-    const possibleMoves = (house, movedHouses) =>
+    const possibleMoves = (actuallyPiece, movedHouses) =>
     {
         let possibleMoves = [];
         let possibleMovesToEat = [];
         let directionToIgnore = [];
-        let pieceMovement = getMove(house.piece.Name);
-        const firstMove  = firstPieceMove(movedHouses, house.piece)
-        const Index = getIndex(house.piece.CurrentHouse);
-        switch (house.piece.Name) {
+        let pieceMovement = getMove(actuallyPiece.Name);
+        const firstMove  = firstPieceMove(movedHouses, actuallyPiece)
+        const Index = getIndex(actuallyPiece.CurrentHouse);
+        switch (actuallyPiece.Name) {
             case Queen().Name:
                 pieceMovement.map(move => {
                     
@@ -224,7 +224,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
                     const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = pieceTarget?.Color === house.piece.Color
+                    const isTheSameColor = pieceTarget?.Color === actuallyPiece.Color
                     if(isTheSameColor)
                     {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))
@@ -252,7 +252,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
                     const movingToEat = !!pieceTarget;
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = pieceTarget?.Color === house.piece.Color;
+                    const isTheSameColor = pieceTarget?.Color === actuallyPiece.Color;
 
                     //Ignore chance to move forward dobled when pawn has a piece in front of him
                     if (pieceDirection === direction.UpSide && !!pieceTarget) {
@@ -288,7 +288,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     const sumResult = respectLimit(move, Index);
                     const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = pieceTarget?.Color === house.piece.Color;
+                    const isTheSameColor = pieceTarget?.Color === actuallyPiece.Color;
                     if (isTheSameColor) {
                         return null;
                     }
@@ -308,7 +308,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
                     const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = pieceTarget?.Color === house.piece.Color
+                    const isTheSameColor = pieceTarget?.Color === actuallyPiece.Color
                     if (isTheSameColor)
                     {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))
@@ -335,7 +335,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
                     const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = pieceTarget?.Color === house.piece.Color
+                    const isTheSameColor = pieceTarget?.Color === actuallyPiece.Color
                     if (isTheSameColor) {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))
                         return null;
@@ -359,7 +359,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
                     const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = pieceTarget?.Color === house.piece.Color
+                    const isTheSameColor = pieceTarget?.Color === actuallyPiece.Color
                     if (isTheSameColor)
                     {
                         return null;
@@ -380,7 +380,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
         }
         return possibleMoves;
     }
-    return possibleMoves(house, movedHouses);
+    return possibleMoves(actuallyPiece, movedHouses);
 }
 
 export default SingleMove;
