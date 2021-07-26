@@ -249,10 +249,16 @@ const SingleMove = (house, AllPieces, movedHouses) => {
 
                     const pieceDirection = move[2];
                     const sumResult = respectLimit(move, Index);
-                    const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult)).find(x => x);
-                    const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
+                    const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
+                    const movingToEat = !!pieceTarget;
                     const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = pieceTarget?.Color === house.piece.Color
+                    const isTheSameColor = pieceTarget?.Color === house.piece.Color;
+
+                    //Ignore chance to move forward dobled when pawn has a piece in front of him
+                    if (pieceDirection === direction.UpSide && !!pieceTarget) {
+                        directionToIgnore = (directionToIgnore.concat(direction.UpSideDouble));
+                    }
+
                     if (isTheSameColor) {
                         return null;
                     }
@@ -267,6 +273,7 @@ const SingleMove = (house, AllPieces, movedHouses) => {
                     {
                         return null;
                     };
+
 
                     possibleMoves.push(moveIndex);
                     return move;
