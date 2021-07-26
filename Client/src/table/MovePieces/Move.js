@@ -146,8 +146,8 @@ const SingleMove = (house, AllPieces, movedHouses) => {
 
     const getIndexInStringSummed = (Index, move) =>
     {
-        let finalLetter = colunmAlphabet[((move[0] + Index.letterIndexParsed) - 1)];
-        let finalIndex = move[1] + Index.NumberIndex;
+        const finalLetter = colunmAlphabet[((move[0] + Index.letterIndexParsed) - 1)];
+        const finalIndex = move[1] + Index.NumberIndex;
 
         return (finalLetter + finalIndex);
     }
@@ -208,8 +208,8 @@ const SingleMove = (house, AllPieces, movedHouses) => {
         let possibleMoves = [];
         let possibleMovesToEat = [];
         let directionToIgnore = [];
-        const firstMove  = firstPieceMove(movedHouses, house.piece)
         let pieceMovement = getMove(house.piece.Name);
+        const firstMove  = firstPieceMove(movedHouses, house.piece)
         const Index = getIndex(house.piece.CurrentHouse);
         switch (house.piece.Name) {
             case Queen().Name:

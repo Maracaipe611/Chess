@@ -9,8 +9,7 @@ const Piece = ({ originalHouse }) => {
     const { AllPieces } = useAllPieces()
 
     useEffect(() => {
-        let piece;
-        piece = AllPieces.map(pieces =>
+        const piece = AllPieces.map(pieces =>
                     pieces.find(finalPiece =>
                         finalPiece.CurrentHouse === originalHouse && finalPiece.Ativo)).find(x => x);
 

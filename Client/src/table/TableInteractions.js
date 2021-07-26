@@ -24,8 +24,6 @@ const TableInteractions = (AllPieces) =>
 
     const PossiblePositions = (piece, movedHouses) => {
         const futuresPositions = SingleMove(piece, AllPieces, movedHouses);
-
-        removeOthersClass(classNames.PossibleMove);
         return futuresPositions;
     };
 
