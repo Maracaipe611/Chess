@@ -2,7 +2,7 @@ import AlphabetArray from "../Utils/AlphabetArray";
 import Color from "../Utils/Colors";
 import PieceNames from "../Utils/PieceNamesArray";
 import SingleMove from "./MovePieces/Move";
-const TableInteractions = (AllPieces) =>
+const TableInteractions = (AllPieces, movedHouses) =>
 {
     const classNames = {
         SelectedHouse: "selectedHouse",
@@ -22,7 +22,7 @@ const TableInteractions = (AllPieces) =>
         }
     };
 
-    const PossiblePositions = (piece, movedHouses) => {
+    const PossiblePositions = (piece) => {
         const futuresPositions = SingleMove(piece, AllPieces, movedHouses);
         return futuresPositions;
     };
@@ -37,6 +37,8 @@ const TableInteractions = (AllPieces) =>
             }
             return y
         }));
+
+        AllPieces = AllPieces.map(x => x.filter(y => y.Ativo !== false )).filter(x => x)
         AllPieces = AnyPawnIsAbleToChange()
         removeOthersClass(classNames.PossibleMove);
         removeOthersClass(classNames.SelectedHouse);
