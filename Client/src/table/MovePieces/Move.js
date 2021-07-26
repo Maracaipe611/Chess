@@ -6,7 +6,7 @@ const SingleMove = (actuallyPiece, AllPieces, movedHouses) => {
         Movements = [];
         FirstMove = true;
     }
-    
+
     class Directions {
         UpSide = 1;
         UpSideLeft = 2;
@@ -25,7 +25,7 @@ const SingleMove = (actuallyPiece, AllPieces, movedHouses) => {
     }
 
     const direction = new Directions();
-    
+
     const Pawn = () => {
         const pawn = new pieceModel();
         pawn.Name = "Pawn";
@@ -38,13 +38,26 @@ const SingleMove = (actuallyPiece, AllPieces, movedHouses) => {
         pawn.FirstMove = true;
         return pawn;
     };
-    
+
+    const BlackPawn = () => {
+        const pawn = new pieceModel();
+        pawn.Name = "BlackPawn";
+        pawn.Movements = [
+            [0, -1, direction.UpSide], //UpSide
+            [0, -2, direction.UpSideDouble], //UpSideDouble
+            [-1, -1, direction.UpSideLeft],//EatLeft 
+            [+1, -1, direction.UpSideRight]//EatRight 
+        ];
+        pawn.FirstMove = true;
+        return pawn;
+    };
+
     const Tower = () => {
         const tower = new pieceModel();
         tower.Name = "Tower";
         tower.Movements = [
             //UpSide
-                [0, 1, direction.UpSide],
+            [0, 1, direction.UpSide],
             [0, 2, direction.UpSide], [0, 3, direction.UpSide], [0, 4, direction.UpSide], [0, 5, direction.UpSide], [0, 6, direction.UpSide], [0, 7, direction.UpSide]
             ,
             //DownSide
@@ -55,7 +68,7 @@ const SingleMove = (actuallyPiece, AllPieces, movedHouses) => {
             ,
             //LeftSide
             [-1, 0, direction.LeftSide], [-2, 0, direction.LeftSide], [-3, 0, direction.LeftSide], [-4, 0, direction.LeftSide], [-5, 0, direction.LeftSide], [-6, 0, direction.LeftSide], [-7, 0, direction.LeftSide]
-            
+
         ];
         return tower;
     };
@@ -135,17 +148,15 @@ const SingleMove = (actuallyPiece, AllPieces, movedHouses) => {
         return queen;
     };
 
-    const getIndex = (pieceIndex) =>
-    {
+    const getIndex = (pieceIndex) => {
         const letterIndex = pieceIndex.charAt(0);
         const NumberIndex = parseInt(pieceIndex.charAt(1));
         const letterIndexParsed = colunmAlphabet.findIndex(x => x === letterIndex) + 1;
 
-        return { letterIndexParsed, NumberIndex};
+        return { letterIndexParsed, NumberIndex };
     }
 
-    const getIndexInStringSummed = (Index, move) =>
-    {
+    const getIndexInStringSummed = (Index, move) => {
         const finalLetter = colunmAlphabet[((move[0] + Index.letterIndexParsed) - 1)];
         const finalIndex = move[1] + Index.NumberIndex;
 
@@ -153,32 +164,35 @@ const SingleMove = (actuallyPiece, AllPieces, movedHouses) => {
     }
 
     const getMove = (pieceName) => {
-    //[letter, index]
-    let Moves;
-    switch (pieceName) {
-        case Queen().Name:
-            Moves = Queen().Movements;
-            break;
-        case King().Name:
-            Moves = King().Movements;
-            break;
-        case Bishop().Name:
-            Moves = Bishop().Movements;
-            break;
-        case Horse().Name:
-            Moves = Horse().Movements;
-            break;
-        case Tower().Name:
-            Moves = Tower().Movements;
-            break;
-        case Pawn().Name:
-            Moves = Pawn().Movements
-            break;
-        default:
-            Moves = [];
-            break;
-    }
-    return Moves;
+        //[letter, index]
+        let Moves;
+        switch (pieceName) {
+            case Queen().Name:
+                Moves = Queen().Movements;
+                break;
+            case King().Name:
+                Moves = King().Movements;
+                break;
+            case Bishop().Name:
+                Moves = Bishop().Movements;
+                break;
+            case Horse().Name:
+                Moves = Horse().Movements;
+                break;
+            case Tower().Name:
+                Moves = Tower().Movements;
+                break;
+            case Pawn().Name:
+                Moves = Pawn().Movements
+                break;
+            case BlackPawn().Name:
+                Moves = BlackPawn().Movements
+                break;
+            default:
+                Moves = [];
+                break;
+        }
+        return Moves;
     }
 
     const respectLimit = (move, Index, directionToIgnore) => {
@@ -187,34 +201,33 @@ const SingleMove = (actuallyPiece, AllPieces, movedHouses) => {
         const direction = move[2] //upside
         const letterSum = Index.letterIndexParsed + moveLetterIndex;
         const indexSum = Index.NumberIndex + moveIndex;
-        const sumResult =  colunmAlphabet[(letterSum - 1)] + indexSum;
+        const sumResult = colunmAlphabet[(letterSum - 1)] + indexSum;
 
         if (letterSum > 8 || letterSum < 1 || indexSum > 8 || indexSum < 1 || directionToIgnore?.includes(direction)) //nao pode passar do limite
             return false;
-        
+
         return sumResult;
     }
 
     const firstPieceMove = (movedHouses, piece) => {
-        if (!!movedHouses.find(pieceId => pieceId === piece.Id))
-        {
+        if (!!movedHouses.find(pieceId => pieceId === piece.Id)) {
             return false;
         }
         return true;
     }
 
-    const possibleMoves = (actuallyPiece, movedHouses) =>
-    {
+    const possibleMoves = (actuallyPiece, movedHouses) => {
         let possibleMoves = [];
         let possibleMovesToEat = [];
         let directionToIgnore = [];
         let pieceMovement = getMove(actuallyPiece.Name);
-        const firstMove  = firstPieceMove(movedHouses, actuallyPiece)
+        const firstMove = firstPieceMove(movedHouses, actuallyPiece)
         const Index = getIndex(actuallyPiece.CurrentHouse);
+        const corDaPeca = actuallyPiece.Color;
         switch (actuallyPiece.Name) {
             case Queen().Name:
                 pieceMovement.map(move => {
-                    
+
                     if (!respectLimit(move, Index, directionToIgnore)) {
                         return null;
                     };
@@ -225,14 +238,12 @@ const SingleMove = (actuallyPiece, AllPieces, movedHouses) => {
                     const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
                     const isTheSameColor = pieceTarget?.Color === actuallyPiece.Color
-                    if(isTheSameColor)
-                    {
+                    if (isTheSameColor) {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))
                         return null;
                     }
 
-                    if (movingToEat)
-                    {
+                    if (movingToEat) {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection)) //filtra a direção que a peça está indo, para que não atravesse outras casas
                         possibleMovesToEat.push(moveIndex);; //atualizar a array enquanto mapeia a própria array não é uma boa ideia
                     }
@@ -242,42 +253,81 @@ const SingleMove = (actuallyPiece, AllPieces, movedHouses) => {
                 });
                 break;
             case Pawn().Name:
-                pieceMovement.map(move => {
-                    if (!respectLimit(move, Index, directionToIgnore)){
-                        return null;
-                    };
+                if (corDaPeca === "White") {
+                    pieceMovement.map(move => {
+                        if (!respectLimit(move, Index, directionToIgnore)) {
+                            return null;
+                        };
 
-                    const pieceDirection = move[2];
-                    const sumResult = respectLimit(move, Index);
-                    const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
-                    const movingToEat = !!pieceTarget;
-                    const moveIndex = getIndexInStringSummed(Index, move);
-                    const isTheSameColor = pieceTarget?.Color === actuallyPiece.Color;
+                        const pieceDirection = move[2];
+                        const sumResult = respectLimit(move, Index);
+                        const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
+                        const movingToEat = !!pieceTarget;
+                        const moveIndex = getIndexInStringSummed(Index, move);
+                        const isTheSameColor = pieceTarget?.Color === actuallyPiece.Color;
 
-                    //Ignore chance to move forward dobled when pawn has a piece in front of him
-                    if (pieceDirection === direction.UpSide && !!pieceTarget) {
-                        directionToIgnore = (directionToIgnore.concat(direction.UpSideDouble));
-                    }
+                        //Ignore chance to move forward dobled when pawn has a piece in front of him
+                        if (pieceDirection === direction.UpSide && !!pieceTarget) {
+                            directionToIgnore = (directionToIgnore.concat(direction.UpSideDouble));
+                        }
 
-                    if (isTheSameColor) {
-                        return null;
-                    }
+                        if (isTheSameColor) {
+                            return null;
+                        }
 
-                    //first move can be double house
-                     if (!firstMove && pieceDirection === direction.UpSideDouble) {
-                        return null;
-                    };
-                    //move forward and only eat on the left/right side
-                    if ((movingToEat === true && (pieceDirection === direction.UpSide || pieceDirection === direction.UpSideDouble))
-                        || (movingToEat === false && (pieceDirection === direction.UpSideLeft || pieceDirection === direction.UpSideRight)))
-                    {
-                        return null;
-                    };
+                        //first move can be double house
+                        if (!firstMove && pieceDirection === direction.UpSideDouble) {
+                            return null;
+                        };
+                        //move forward and only eat on the left/right side
+                        if ((movingToEat === true && (pieceDirection === direction.UpSide || pieceDirection === direction.UpSideDouble))
+                            || (movingToEat === false && (pieceDirection === direction.UpSideLeft || pieceDirection === direction.UpSideRight))) {
+                            return null;
+                        };
 
 
-                    possibleMoves.push(moveIndex);
-                    return move;
-                });
+                        possibleMoves.push(moveIndex);
+                        return move;
+                    });
+                }else
+                {
+                    pieceMovement = getMove("BlackPawn")
+                    pieceMovement.map(move => {
+                        if (!respectLimit(move, Index, directionToIgnore)) {
+                            return null;
+                        };
+
+                        const pieceDirection = move[2];
+                        const sumResult = respectLimit(move, Index);
+                        const pieceTarget = AllPieces.map(pieces => pieces.find(piece => piece.CurrentHouse === sumResult && piece.Ativo)).find(x => x);
+                        const movingToEat = !!pieceTarget;
+                        const moveIndex = getIndexInStringSummed(Index, move);
+                        const isTheSameColor = pieceTarget?.Color === actuallyPiece.Color;
+
+                        //Ignore chance to move forward dobled when pawn has a piece in front of him
+                        if (pieceDirection === direction.UpSide && !!pieceTarget) {
+                            directionToIgnore = (directionToIgnore.concat(direction.UpSideDouble));
+                        }
+
+                        if (isTheSameColor) {
+                            return null;
+                        }
+
+                        //first move can be double house
+                        if (!firstMove && pieceDirection === direction.UpSideDouble) {
+                            return null;
+                        };
+                        //move forward and only eat on the left/right side
+                        if ((movingToEat === true && (pieceDirection === direction.UpSide || pieceDirection === direction.UpSideDouble))
+                            || (movingToEat === false && (pieceDirection === direction.UpSideLeft || pieceDirection === direction.UpSideRight))) {
+                            return null;
+                        };
+
+
+                        possibleMoves.push(moveIndex);
+                        return move;
+                    });
+                }
                 break;
             case Horse().Name:
                 pieceMovement.map(move => {
@@ -309,14 +359,12 @@ const SingleMove = (actuallyPiece, AllPieces, movedHouses) => {
                     const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
                     const isTheSameColor = pieceTarget?.Color === actuallyPiece.Color
-                    if (isTheSameColor)
-                    {
+                    if (isTheSameColor) {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))
                         return null;
                     }
 
-                    if (movingToEat)
-                    {
+                    if (movingToEat) {
                         directionToIgnore = (directionToIgnore.concat(pieceDirection))
                         possibleMovesToEat.push(moveIndex);
                     }
@@ -360,13 +408,11 @@ const SingleMove = (actuallyPiece, AllPieces, movedHouses) => {
                     const movingToEat = !!pieceTarget && !!pieceTarget?.Ativo;
                     const moveIndex = getIndexInStringSummed(Index, move);
                     const isTheSameColor = pieceTarget?.Color === actuallyPiece.Color
-                    if (isTheSameColor)
-                    {
+                    if (isTheSameColor) {
                         return null;
                     }
 
-                    if (movingToEat)
-                    {
+                    if (movingToEat) {
                         possibleMovesToEat.push(moveIndex);
                     }
                     possibleMoves.push(moveIndex);

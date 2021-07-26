@@ -13,7 +13,6 @@ function Table() {
     const [possibleMove, setPossibleMove] = useState([]);
     const { AllPieces, setAllPieces } = useAllPieces()
     const [FinalChessBoard, setFinalChessBoard] = useState();
-    const [dangerousHouses, setDangerousHouses] = useState([])
     const colunmLimit = [8, 7, 6, 5, 4, 3, 2, 1];
 
     useEffect(() => {
@@ -61,7 +60,7 @@ function Table() {
     }
 
     const movePiece = (house) => {
-        const { UnselectHouse, PossiblePositions, MovePiece, getDangerousHouses } = TableInteractions(AllPieces, movedHouses);
+        const { UnselectHouse, PossiblePositions, MovePiece } = TableInteractions(AllPieces, movedHouses);
         
         if (house.piece.Id === selectedPiece?.Id) return (unselectedPiece(UnselectHouse));
 
@@ -72,7 +71,6 @@ function Table() {
 
         UnselectHouse();
         setSelectedHouse(house.houseDiv.id);
-        getDangerousHouses("White")
         
         if (!userIsSelectingSameHouse && !selectingToMove && !movingToEat && houseHasPiece)
         {

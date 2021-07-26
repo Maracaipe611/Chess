@@ -37,6 +37,8 @@ const TableInteractions = (AllPieces, movedHouses) =>
             }
             return y
         }));
+
+        AllPieces = AllPieces.map(x => x.filter(y => y.Ativo !== false )).filter(x => x)
         AllPieces = AnyPawnIsAbleToChange()
         removeOthersClass(classNames.PossibleMove);
         removeOthersClass(classNames.SelectedHouse);
@@ -65,19 +67,7 @@ const TableInteractions = (AllPieces, movedHouses) =>
         return AllPieces;
     }
 
-    const getDangerousHouses = (UserColor) =>
-    {
-        const allyKing = AllPieces.map(pieces =>
-            pieces.find(piece =>
-                piece.Name === PieceNames.king && piece.Ativo && piece.Color === UserColor)).find(x => x);
-
-        const enemyPiecesActives = AllPieces.filter(pieces =>
-            pieces.find(piece =>
-                piece.Ativo === true && piece.Color !== allyKing.Color)).flatMap(x => x)
-        console.log(enemyPiecesActives);
-    }
-
-    return { UnselectHouse, PossiblePositions, MovePiece, ChangePawn, getDangerousHouses}
+    return { UnselectHouse, PossiblePositions, MovePiece, ChangePawn}
 }
 
 export default TableInteractions;
