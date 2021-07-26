@@ -36,12 +36,11 @@ const House = (props) => {
     const getChildId = (singleHouse) =>
     {
         const piece = AllPieces.map(pieces => pieces.find(piece =>
-            piece.CurrentHouse === singleHouse.Id && piece.Ativo
+            piece.CurrentHouse === singleHouse.Id
             )).find(x => x) ||
         {
             Id: "0",
-            Name: "Void",
-            Ativo: true
+            Name: "Void"
         };
         const houseDiv = document.getElementById(singleHouse.Id);
         return { piece, houseDiv}
