@@ -64,7 +64,7 @@ function Table() {
         
         if (house.piece.Id === selectedPiece?.Id) return (unselectedPiece(UnselectHouse));
 
-        const houseHasPiece = !(house.piece.Name === piecesNames.void && house.piece.Ativo)
+        const houseHasPiece = !(house.piece.Name === piecesNames.void)
         const selectingToMove = !houseHasPiece && possibleMove.includes(house.houseDiv.id);
         const userIsSelectingSameHouse = houseHasPiece && house.piece.Id === selectedPiece.Id;
         const movingToEat = houseHasPiece && selectedPiece?.Color !== house.piece.Color && !!selectedPiece && !!selectedPiece.Color && possibleMove.includes(house.piece.CurrentHouse);

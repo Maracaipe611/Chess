@@ -11,7 +11,7 @@ const Piece = ({ originalHouse }) => {
     useEffect(() => {
         const piece = AllPieces.map(pieces =>
                     pieces.find(finalPiece =>
-                        finalPiece.CurrentHouse === originalHouse && finalPiece.Ativo)).find(x => x);
+                        finalPiece.CurrentHouse === originalHouse)).find(x => x);
 
         setCurrentPiece(piece);
     }, [AllPieces, originalHouse])
@@ -24,7 +24,7 @@ const Piece = ({ originalHouse }) => {
     }
 
     const component = () => {
-        return (!!CurrentPiece && CurrentPiece?.Ativo &&
+        return (!!CurrentPiece && !!CurrentPiece.Id &&
             <div
                 data-pieceid={CurrentPiece.Id}
                 data-piececolor={CurrentPiece.Name === pieceNames.void ? "" : CurrentPiece.Color}
