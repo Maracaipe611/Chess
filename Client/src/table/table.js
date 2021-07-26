@@ -52,7 +52,7 @@ function Table() {
     }, [AllPieces])
 
     const movePiece = (house) => {
-        if (house.piece.Id === selectedPiece.Id) return null;
+        if (house.piece.Id === selectedPiece?.Id) return null;
 
         const { SelectHouse, PossiblePositions, MovePiece } = TableInteractions(AllPieces);
         const houseHasPiece = !(house.piece.Name === piecesNames.void && house.piece.Ativo)

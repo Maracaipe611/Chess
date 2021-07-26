@@ -7,126 +7,126 @@ const PieceModel = () => {
         White: "White"
     };
     const AllPieces = [
-        AlphabetArray.Normal.map((constter, i) => {
+        AlphabetArray.Normal.map((letter, i) => {
             const Name = PieceNames.pawn;
-            const StartPosition = constter + 2;
+            const StartPosition = letter + 2;
             const Id = i + Name + StartPosition;
             const Color = Colors.White;
             const CurrentHouse = StartPosition;
-            const AbconstoChange = false;
+            const AbleToChange = false;
             const Ativo = true;
-            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbconstoChange }
+            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbleToChange }
         }),
-        ["A", "H"].map((constter, i) => {
+        ["A", "H"].map((letter, i) => {
             const Name = PieceNames.tower;
-            const StartPosition = constter + 1;
+            const StartPosition = letter + 1;
             const Id = i + Name + StartPosition;
             const Color = Colors.White;
             const CurrentHouse = StartPosition;
-            const AbconstoChange = false;
+            const AbleToChange = false;
             const Ativo = true;
-            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbconstoChange }
+            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbleToChange }
         }),
-        ['B', 'G'].map((constter, i) => {
+        ['B', 'G'].map((letter, i) => {
             const Name = PieceNames.horse;
-            const StartPosition = constter + 1;
+            const StartPosition = letter + 1;
             const Id = i + Name + StartPosition;
             const Color = Colors.White;
             const CurrentHouse = StartPosition;
-            const AbconstoChange = false;
+            const AbleToChange = false;
             const Ativo = true;
-            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbconstoChange }
+            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbleToChange }
         }),
-        ['C', 'F'].map((constter, i) => {
+        ['C', 'F'].map((letter, i) => {
             const Name = PieceNames.bishop;
-            const StartPosition = constter + 1;
+            const StartPosition = letter + 1;
             const Id = i + Name + StartPosition;
             const Color = Colors.White;
             const CurrentHouse = StartPosition;
-            const AbconstoChange = false;
+            const AbleToChange = false;
             const Ativo = true;
-            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbconstoChange }
+            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbleToChange }
         }),
-        ['E'].map((constter, i) => {
+        ['E'].map((letter, i) => {
             const Name = PieceNames.king;
-            const StartPosition = constter + 1;
+            const StartPosition = letter + 1;
             const Id = i + Name + StartPosition;
             const Color = Colors.White;
             const CurrentHouse = StartPosition;
-            const AbconstoChange = false;
+            const AbleToChange = false;
             const Ativo = true;
-            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbconstoChange }
+            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbleToChange }
         }),
-        ['D'].map((constter, i) => {
+        ['D'].map((letter, i) => {
             const Name = PieceNames.queen;
-            const StartPosition = constter + 1;
+            const StartPosition = letter + 1;
             const Id = i + Name + StartPosition;
             const Color = Colors.White;
             const CurrentHouse = StartPosition;
-            const AbconstoChange = false;
+            const AbleToChange = false;
             const Ativo = true;
-            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbconstoChange }
+            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbleToChange }
         }),
         //BlackPieces
-        AlphabetArray.Normal.map((constter, i) => {
+        AlphabetArray.Normal.map((letter, i) => {
             const Name = PieceNames.pawn;
-            const StartPosition = constter + 7;
+            const StartPosition = letter + 7;
             const Id = i + Name + StartPosition;
             const Color = Colors.Black;
             const CurrentHouse = StartPosition;
-            const AbconstoChange = false;
+            const AbleToChange = false;
             const Ativo = true;
-            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbconstoChange }
+            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbleToChange }
         }),
-        ["A", "H"].map((constter, i) => {
+        ["A", "H"].map((letter, i) => {
             const Name = PieceNames.tower;
-            const StartPosition = constter + 8;
+            const StartPosition = letter + 8;
             const Id = i + Name + StartPosition;
             const Color = Colors.Black;
             const CurrentHouse = StartPosition;
-            const AbconstoChange = false;
+            const AbleToChange = false;
             const Ativo = true;
-            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbconstoChange }
+            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbleToChange }
         }),
-        ['B', 'G'].map((constter, i) => {
+        ['B', 'G'].map((letter, i) => {
             const Name = PieceNames.horse;
-            const StartPosition = constter + 8;
+            const StartPosition = letter + 8;
             const Id = i + Name + StartPosition;
             const Color = Colors.Black;
             const CurrentHouse = StartPosition;
-            const AbconstoChange = false;
+            const AbleToChange = false;
             const Ativo = true;
-            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbconstoChange }
+            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbleToChange }
         }),
-        ['C', 'F'].map((constter, i) => {
+        ['C', 'F'].map((letter, i) => {
             const Name = PieceNames.bishop;
-            const StartPosition = constter + 8;
+            const StartPosition = letter + 8;
             const Id = i + Name + StartPosition;
             const Color = Colors.Black;
             const CurrentHouse = StartPosition;
-            const AbconstoChange = false;
+            const AbleToChange = false;
             const Ativo = true;
-            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbconstoChange }
+            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbleToChange }
         }),
-        ['E'].map((constter, i) => {
+        ['E'].map((letter, i) => {
             const Name = PieceNames.king;
-            const StartPosition = constter + 8;
+            const StartPosition = letter + 8;
             const Id = i + Name + StartPosition;
             const Color = Colors.Black;
             const CurrentHouse = StartPosition;
-            const AbconstoChange = false;
+            const AbleToChange = false;
             const Ativo = true;
-            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbconstoChange }
+            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbleToChange }
         }),
-        ['D'].map((constter, i) => {
+        ['D'].map((letter, i) => {
             const Name = PieceNames.queen;
-            const StartPosition = constter + 8;
+            const StartPosition = letter + 8;
             const Id = i + Name + StartPosition;
             const Color = Colors.Black;
             const CurrentHouse = StartPosition;
-            const AbconstoChange = false;
+            const AbleToChange = false;
             const Ativo = true;
-            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbconstoChange }
+            return { Id, Name, StartPosition, Color, CurrentHouse, Ativo, AbleToChange }
         })
     ]
 
