@@ -9,7 +9,7 @@ const TableInteractions = (AllPieces) =>
         PossibleMove: "possibleMove"
     };
 
-    const SelectHouse = (piece) =>
+    const UnselectHouse = () =>
     {
         removeOthersClass(classNames.SelectedHouse);
     };
@@ -65,7 +65,7 @@ const TableInteractions = (AllPieces) =>
         return AllPieces;
     }
 
-    return { SelectHouse, PossiblePositions, MovePiece, ChangePawn}
+    return { UnselectHouse, PossiblePositions, MovePiece, ChangePawn}
 }
 
 export default TableInteractions;
