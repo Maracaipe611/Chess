@@ -12,7 +12,7 @@ const Piece = ({ originalHouse }) => {
         let piece;
         piece = AllPieces.map(pieces =>
                     pieces.find(finalPiece =>
-                        finalPiece.CurrentHouse === originalHouse)).find(x => x);
+                        finalPiece.CurrentHouse === originalHouse && finalPiece.Ativo)).find(x => x);
 
         setCurrentPiece(piece);
     }, [AllPieces, originalHouse])
